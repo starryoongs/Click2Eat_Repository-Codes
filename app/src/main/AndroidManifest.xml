@@ -24,7 +24,6 @@
 
         </activity>
 
-
         <!-- Registration -->
         <activity
             android:name=".auth.RegisterActivity"
@@ -43,6 +42,16 @@
         <!-- All Carts -->
         <activity
             android:name=".CartActivity"
+            android:exported="false" />
+
+        <!-- Checkout -->
+        <activity
+            android:name=".checkout.CheckoutActivity"
+            android:exported="false" />
+
+        <!-- Order Confirmation -->
+        <activity
+            android:name=".checkout.OrderConfirmationActivity"
             android:exported="false" />
 
     </application>
