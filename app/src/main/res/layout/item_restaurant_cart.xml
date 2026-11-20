@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="18dp"
+    android:background="@drawable/bg_restaurant_cart"
+    android:orientation="vertical"
+    android:padding="20dp">
+
+    <!-- Restaurant Information -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical">
+
+        <ImageView
+            android:id="@+id/imgRestaurant"
+            android:layout_width="64dp"
+            android:layout_height="64dp"
+            android:src="@android:drawable/ic_menu_gallery"
+            android:contentDescription="Restaurant logo"/>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginStart="14dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/txtRestaurantName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="McDo - Fastfood"
+                android:textColor="#111111"
+                android:textSize="19sp"
+                android:textStyle="bold"/>
+
+            <TextView
+                android:id="@+id/txtDeliveryTime"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:text="20-30 mins"
+                android:textColor="#555555"
+                android:textSize="14sp"/>
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/btnRestaurantOptions"
+            android:layout_width="40dp"
+            android:layout_height="48dp"
+            android:gravity="center"
+            android:text="⋯"
+            android:textSize="28sp"
+            android:contentDescription="Restaurant cart options"/>
+
+    </LinearLayout>
+
+    <!-- Food Preview Area -->
+    <LinearLayout
+        android:id="@+id/layoutFoodPreviews"
+        android:layout_width="match_parent"
+        android:layout_height="85dp"
+        android:layout_marginTop="18dp"
+        android:orientation="horizontal"
+        android:gravity="center_vertical">
+
+        <!-- Food images will be added dynamically -->
+
+    </LinearLayout>
+
+    <!-- Restaurant Subtotal -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:orientation="horizontal"
+        android:gravity="center_vertical">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Subtotal:"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:textColor="#555555"/>
+
+        <TextView
+            android:id="@+id/txtRestaurantSubtotal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="₱400.00"
+            android:textSize="17sp"
+            android:textStyle="bold"
+            android:textColor="#555555"/>
+
+    </LinearLayout>
+
+    <!-- View Cart Button -->
+    <android.widget.TextView
+        android:id="@+id/btnViewCart"
+        android:layout_width="220dp"
+        android:layout_height="48dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/bg_pink_outline"
+        android:gravity="center"
+        android:text="View Your Cart"
+        android:textColor="#F477B3"
+        android:textSize="15sp"
+        android:clickable="true"
+        android:focusable="true"
+        android:contentDescription="View restaurant cart" />
+
+
+
+</LinearLayout>

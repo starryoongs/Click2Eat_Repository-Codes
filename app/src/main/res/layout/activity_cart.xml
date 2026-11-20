@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#FCE3EC">
+
+    <!-- Click2Eat Header -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="90dp"
+        android:gravity="center_vertical"
+        android:paddingHorizontal="20dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/btnMenu"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:gravity="center"
+            android:text="☰"
+            android:textSize="32sp"
+            android:contentDescription="Open menu"/>
+
+        <TextView
+            android:id="@+id/txtLogo"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="Click2Eat"
+            android:textColor="#F477B3"
+            android:textStyle="bold|italic"
+            android:textSize="28sp"/>
+
+        <TextView
+            android:id="@+id/btnProfile"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:gravity="center"
+            android:text="●"
+            android:textColor="#F477B3"
+            android:textSize="30sp"
+            android:contentDescription="Profile"/>
+
+    </LinearLayout>
+
+    <!-- Page Title -->
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="All Carts"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:textColor="#555555"
+        android:padding="24dp"/>
+
+    <!-- Restaurant Cart List -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerRestaurantCarts"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:paddingHorizontal="20dp"
+        android:clipToPadding="false"/>
+
+    <!-- Empty Cart Message -->
+    <TextView
+        android:id="@+id/txtEmptyCart"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Your cart is empty."
+        android:textSize="16sp"
+        android:textColor="#666666"
+        android:gravity="center"
+        android:padding="20dp"
+        android:visibility="gone"/>
+
+    <!-- Bottom Navigation Placeholder -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="72dp"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:background="#FFFFFF">
+
+        <TextView
+            android:id="@+id/navHome"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="Home"
+            android:textColor="#F477B3"/>
+
+        <TextView
+            android:id="@+id/navCart"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="Cart"
+            android:textColor="#F477B3"
+            android:textStyle="bold"/>
+
+        <TextView
+            android:id="@+id/navRestaurants"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="Restaurants"
+            android:textColor="#F477B3"/>
+
+        <TextView
+            android:id="@+id/navOrders"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="Orders"
+            android:textColor="#F477B3"/>
+
+    </LinearLayout>
+
+</LinearLayout>
