@@ -10,7 +10,7 @@ class DatabaseHelper(context: Context) :
 
     companion object {
         const val DATABASE_NAME = "click2eat.db"
-        const val DATABASE_VERSION = 1
+        const val DATABASE_VERSION = 2
     }
 
     override fun onConfigure(db: SQLiteDatabase) {
@@ -19,6 +19,7 @@ class DatabaseHelper(context: Context) :
     }
 
     override fun onCreate(db: SQLiteDatabase) {
+
 
         // 1. USERS
         db.execSQL("""
@@ -29,6 +30,7 @@ class DatabaseHelper(context: Context) :
                 last_name TEXT NOT NULL,
                 email TEXT NOT NULL UNIQUE,
                 password TEXT NOT NULL,
+                profile_picture TEXT,
                 created_at TEXT DEFAULT CURRENT_TIMESTAMP
             )
         """.trimIndent())
@@ -135,7 +137,10 @@ class DatabaseHelper(context: Context) :
         oldVersion: Int,
         newVersion: Int
     ) {
-        // Future schema migrations go here.
-        // Do not delete customer or order records.
+        if (oldVersion < 2) {
+            db.execSQL(
+                "ALTER TABLE users ADD COLUMN profile_picture TEXT"
+            )
+        }
     }
 }

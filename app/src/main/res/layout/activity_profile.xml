@@ -1,0 +1,214 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true"
+    android:background="@color/click_profile_bg">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="24dp">
+
+        <!-- White Profile Card -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="20dp"
+            android:background="@drawable/bg_profile_card">
+
+            <!-- Title -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="My Profile"
+                android:textSize="24sp"
+                android:textStyle="bold"
+                android:textColor="@color/click_text"
+                android:gravity="center"/>
+
+            <!-- Subtitle -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="Update your account information"
+                android:textSize="15sp"
+                android:textColor="@color/click_text"
+                android:gravity="center"/>
+
+            <!-- Circular Profile Picture -->
+            <ImageView
+                android:id="@+id/ivProfilePicture"
+                android:layout_width="125dp"
+                android:layout_height="125dp"
+                android:layout_gravity="center"
+                android:layout_marginTop="12dp"
+                android:layout_marginBottom="38dp"
+                android:src="@drawable/default_profile"
+                android:background="@drawable/bg_profile_circle"
+                android:clipToOutline="true"
+                android:scaleType="centerCrop"
+                android:contentDescription="Profile Picture"/>
+
+            <!-- Username -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Username"
+                android:textSize="12sp"
+                android:textColor="@color/click_text"/>
+
+            <TextView
+                android:id="@+id/tvUsername"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_marginTop="5dp"
+                android:background="@color/click_gray"
+                android:gravity="center_vertical"
+                android:paddingHorizontal="12dp"
+                android:text="Username"
+                android:textSize="14sp"
+                android:textColor="@color/click_text"/>
+
+            <!-- First Name -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="14dp"
+                android:text="First Name"
+                android:textSize="12sp"
+                android:textColor="@color/click_text"/>
+
+            <EditText
+                android:id="@+id/etFirstName"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_marginTop="5dp"
+                android:background="@drawable/bg_pink_input"
+                android:hint="First Name"
+                android:textColorHint="@color/click_text"
+                android:inputType="textPersonName"
+                android:singleLine="true"
+                android:paddingHorizontal="12dp"
+                android:textSize="14sp"/>
+
+            <!-- Last Name -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="14dp"
+                android:text="Last Name"
+                android:textSize="12sp"
+                android:textColor="@color/click_text"/>
+
+            <EditText
+                android:id="@+id/etLastName"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_marginTop="5dp"
+                android:background="@drawable/bg_pink_input"
+                android:hint="Last Name"
+                android:textColorHint="@color/click_text"
+                android:inputType="textPersonName"
+                android:singleLine="true"
+                android:paddingHorizontal="12dp"
+                android:textSize="14sp"/>
+
+            <!-- Email -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="14dp"
+                android:text="Email"
+                android:textSize="12sp"
+                android:textColor="@color/click_text"/>
+
+            <EditText
+                android:id="@+id/etEmail"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_marginTop="5dp"
+                android:background="@drawable/bg_pink_input"
+                android:hint="Email@gmail.com"
+                android:textColorHint="@color/click_text"
+                android:inputType="textEmailAddress"
+                android:singleLine="true"
+                android:paddingHorizontal="12dp"
+                android:textSize="14sp"/>
+
+            <!-- Profile Picture Selection -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="Profile Picture"
+                android:textSize="12sp"
+                android:textColor="@color/click_text"/>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:layout_marginTop="4dp">
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/btnChoosePicture"
+                    android:layout_width="wrap_content"
+                    android:layout_height="28dp"
+                    android:minWidth="0dp"
+                    android:minHeight="0dp"
+                    android:paddingStart="6dp"
+                    android:paddingEnd="6dp"
+                    android:background="@drawable/bg_choose_file"
+                    android:text="Choose File"
+                    android:textColor="#222222"
+                    android:textSize="10sp"
+                    android:textAllCaps="false"
+                    android:stateListAnimator="@null"/>
+
+                <TextView
+                    android:id="@+id/tvSelectedFile"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="6dp"
+                    android:text="No file chosen"
+                    android:textColor="#333333"
+                    android:textSize="10sp"/>
+
+            </LinearLayout>
+
+
+            <!-- Save Changes -->
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btnSaveProfile"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_marginTop="12dp"
+                android:background="@drawable/bg_pink_button"
+                android:text="Save Changes"
+                android:textAllCaps="false"
+                android:textColor="@color/click_white"/>
+
+            <!-- Back to Home -->
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btnBackHome"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/bg_outline_button"
+                android:text="← Back to Home"
+                android:textAllCaps="false"
+                android:textColor="#F47FBE"
+                android:textSize="14sp"
+                android:stateListAnimator="@null"/>
+
+
+        </LinearLayout>
+    </LinearLayout>
+</ScrollView>
