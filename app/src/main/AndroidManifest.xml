@@ -26,6 +26,12 @@
         <activity
             android:name=".auth.ProfileActivity"
             android:exported="false" />
+        <activity
+            android:name=".checkout.CheckoutActivity"
+            android:exported="false" />
+        <activity
+            android:name=".checkout.OrderConfirmationActivity"
+            android:exported="false" />
     </application>
 
 </manifest>
