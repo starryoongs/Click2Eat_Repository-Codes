@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true"
+    android:background="@color/click_white">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:minHeight="680dp"
+        android:orientation="vertical"
+        android:gravity="center_horizontal"
+        android:paddingStart="36dp"
+        android:paddingEnd="36dp"
+        android:paddingTop="70dp"
+        android:paddingBottom="10dp">
+
+        <ImageView
+            android:id="@+id/ivLogo"
+            android:layout_width="160dp"
+            android:layout_height="65dp"
+            android:contentDescription="Click2Eat Logo"
+            android:scaleType="fitCenter"
+            android:src="@drawable/click2eat_logo" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="50dp"
+            android:text="Login"
+            android:textSize="22sp"
+            android:textStyle="bold"
+            android:textColor="@color/click_text"/>
+
+        <EditText
+            android:id="@+id/etIdentifier"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_marginTop="22dp"
+            android:background="@drawable/bg_pink_input"
+            android:hint="Enter Email or Username"
+            android:textColorHint="@color/click_text"
+            android:inputType="text"
+            android:singleLine="true"
+            android:paddingHorizontal="12dp"
+            android:textSize="13sp"/>
+
+        <EditText
+            android:id="@+id/etPassword"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_marginTop="6dp"
+            android:background="@drawable/bg_pink_input"
+            android:hint="Enter Password"
+            android:textColorHint="@color/click_text"
+            android:inputType="textPassword"
+            android:singleLine="true"
+            android:paddingHorizontal="12dp"
+            android:textSize="13sp"/>
+
+        <Button
+            android:id="@+id/btnLogin"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_marginTop="12dp"
+            android:backgroundTint="@color/click_pink"
+            android:text="Login"
+            android:textAllCaps="false"
+            android:textColor="@color/click_white"/>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="18dp"
+            android:orientation="horizontal"
+            android:gravity="center">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Don't have an account? "
+                android:textColor="@color/click_text"
+                android:textSize="14sp"/>
+
+            <TextView
+                android:id="@+id/tvRegister"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Register"
+                android:textColor="@color/click_pink"
+                android:textSize="14sp"
+                android:padding="4dp"/>
+
+        </LinearLayout>
+
+        <Space
+            android:layout_width="1dp"
+            android:layout_height="0dp"
+            android:layout_weight="1"/>
+
+        <ImageView
+            android:id="@+id/ivDinosaur"
+            android:layout_width="200dp"
+            android:layout_height="190dp"
+            android:src="@drawable/dinosaur"
+            android:contentDescription="Click2Eat Dinosaur Mascot"
+            android:scaleType="fitCenter"/>
+
+    </LinearLayout>
+</ScrollView>

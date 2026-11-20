@@ -1,46 +1,84 @@
-
 package com.example.click2eat.database
 
 import android.content.ContentValues
 import android.content.Context
 import android.database.sqlite.SQLiteConstraintException
 import com.example.click2eat.models.User
+import com.example.click2eat.utils.PasswordUtils
 
 class UserRepository(context: Context) {
 
-    private val databaseHelper = DatabaseHelper(context)
+    private val helper = DatabaseHelper(context)
 
     fun registerUser(
         username: String,
         firstName: String,
         lastName: String,
         email: String,
-        passwordHash: String
+        password: String
     ): Boolean {
-
-        val db = databaseHelper.writableDatabase
+        val hash = PasswordUtils.hashPassword(password)
 
         val values = ContentValues().apply {
-            put("username", username)
-            put("first_name", firstName)
-            put("last_name", lastName)
-            put("email", email)
-            put("password", passwordHash)
+            put("username", username.trim())
+            put("first_name", firstName.trim())
+            put("last_name", lastName.trim())
+            put("email", email.trim().lowercase())
+            put("password", hash)
         }
 
         return try {
-            db.insertOrThrow("users", null, values)
+            helper.writableDatabase.insertOrThrow(
+                "users",
+                null,
+                values
+            )
             true
         } catch (e: SQLiteConstraintException) {
             false
         }
     }
 
+    fun authenticateUser(
+        identifier: String,
+        password: String
+    ): Long? {
+
+        val db = helper.readableDatabase
+
+        db.query(
+            "users",
+            arrayOf("id", "password"),
+            "username = ? OR email = ?",
+            arrayOf(
+                identifier.trim(),
+                identifier.trim()
+            ),
+            null,
+            null,
+            null
+        ).use { cursor ->
+
+            if (cursor.moveToFirst()) {
+                val id = cursor.getLong(0)
+                val hash = cursor.getString(1)
+
+                if (PasswordUtils.verifyPassword(
+                        password,
+                        hash
+                    )
+                ) {
+                    return id
+                }
+            }
+        }
+
+        return null
+    }
+
     fun getUserById(userId: Long): User? {
 
-        val db = databaseHelper.readableDatabase
-
-        val cursor = db.query(
+        helper.readableDatabase.query(
             "users",
             arrayOf(
                 "id",
@@ -48,38 +86,61 @@ class UserRepository(context: Context) {
                 "first_name",
                 "last_name",
                 "email",
-                "created_at"
+                "created_at",
+                "profile_picture"
             ),
             "id = ?",
             arrayOf(userId.toString()),
             null,
             null,
             null
-        )
+        ).use { cursor ->
 
-        cursor.use {
-            if (it.moveToFirst()) {
+            if (cursor.moveToFirst()) {
                 return User(
-                    id = it.getLong(it.getColumnIndexOrThrow("id")),
-                    username = it.getString(
-                        it.getColumnIndexOrThrow("username")
-                    ),
-                    firstName = it.getString(
-                        it.getColumnIndexOrThrow("first_name")
-                    ),
-                    lastName = it.getString(
-                        it.getColumnIndexOrThrow("last_name")
-                    ),
-                    email = it.getString(
-                        it.getColumnIndexOrThrow("email")
-                    ),
-                    createdAt = it.getString(
-                        it.getColumnIndexOrThrow("created_at")
-                    )
+                    id = cursor.getLong(0),
+                    username = cursor.getString(1),
+                    firstName = cursor.getString(2),
+                    lastName = cursor.getString(3),
+                    email = cursor.getString(4),
+                    createdAt = cursor.getString(5),
+                    profilePicture = cursor.getString(6)
                 )
             }
         }
 
         return null
     }
+
+
+    fun updateProfile(
+        userId: Long,
+        firstName: String,
+        lastName: String,
+        email: String,
+        profilePicture: String?
+    ): Boolean {
+
+        val values = ContentValues().apply {
+            put("first_name", firstName.trim())
+            put("last_name", lastName.trim())
+            put("email", email.trim().lowercase())
+
+            if (profilePicture != null) {
+                put("profile_picture", profilePicture)
+            }
+        }
+
+        return try {
+            helper.writableDatabase.update(
+                "users",
+                values,
+                "id = ?",
+                arrayOf(userId.toString())
+            ) > 0
+        } catch (e: SQLiteConstraintException) {
+            false
+        }
+    }
+
 }

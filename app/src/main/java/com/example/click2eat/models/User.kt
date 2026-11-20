@@ -7,5 +7,6 @@ data class User(
     val firstName: String,
     val lastName: String,
     val email: String,
-    val createdAt: String
+    val createdAt: String,
+    val profilePicture: String? = null
 )
