@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true"
+    android:background="@color/click_white">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:minHeight="740dp"
+        android:orientation="vertical"
+        android:gravity="center_horizontal"
+        android:paddingStart="36dp"
+        android:paddingEnd="36dp"
+        android:paddingTop="45dp"
+        android:paddingBottom="10dp">
+
+        <ImageView
+            android:id="@+id/ivLogo"
+            android:layout_width="160dp"
+            android:layout_height="65dp"
+            android:src="@drawable/click2eat_logo"
+            android:contentDescription="Click2Eat Logo"
+            android:scaleType="fitCenter"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="38dp"
+            android:text="Register"
+            android:textSize="22sp"
+            android:textStyle="bold"
+            android:textColor="@color/click_text"/>
+
+        <EditText
+            android:id="@+id/etUsername"
+            android:layout_width="match_parent"
+            android:layout_height="46dp"
+            android:layout_marginTop="18dp"
+            android:background="@drawable/bg_pink_input"
+            android:hint="Enter Username"
+            android:textColorHint="@color/click_text"
+            android:inputType="text"
+            android:paddingHorizontal="12dp"
+            android:singleLine="true"
+            android:textSize="13sp" />
+
+        <EditText
+            android:id="@+id/etFirstName"
+            android:layout_width="match_parent"
+            android:layout_height="46dp"
+            android:layout_marginTop="5dp"
+            android:background="@drawable/bg_pink_input"
+            android:hint="Enter First Name"
+            android:textColorHint="@color/click_text"
+            android:inputType="textPersonName"
+            android:singleLine="true"
+            android:paddingHorizontal="12dp"
+            android:textSize="13sp"/>
+
+        <EditText
+            android:id="@+id/etLastName"
+            android:layout_width="match_parent"
+            android:layout_height="46dp"
+            android:layout_marginTop="5dp"
+            android:background="@drawable/bg_pink_input"
+            android:hint="Enter Last Name"
+            android:textColorHint="@color/click_text"
+            android:inputType="textPersonName"
+            android:singleLine="true"
+            android:paddingHorizontal="12dp"
+            android:textSize="13sp"/>
+
+        <EditText
+            android:id="@+id/etEmail"
+            android:layout_width="match_parent"
+            android:layout_height="46dp"
+            android:layout_marginTop="5dp"
+            android:background="@drawable/bg_pink_input"
+            android:hint="Enter Email"
+            android:textColorHint="@color/click_text"
+            android:inputType="textEmailAddress"
+            android:singleLine="true"
+            android:paddingHorizontal="12dp"
+            android:textSize="13sp"/>
+
+        <EditText
+            android:id="@+id/etPassword"
+            android:layout_width="match_parent"
+            android:layout_height="46dp"
+            android:layout_marginTop="5dp"
+            android:background="@drawable/bg_pink_input"
+            android:hint="Enter Password"
+            android:textColorHint="@color/click_text"
+            android:inputType="textPassword"
+            android:singleLine="true"
+            android:paddingHorizontal="12dp"
+            android:textSize="13sp"/>
+
+        <EditText
+            android:id="@+id/etConfirmPassword"
+            android:layout_width="match_parent"
+            android:layout_height="46dp"
+            android:layout_marginTop="5dp"
+            android:background="@drawable/bg_pink_input"
+            android:hint="Confirm Password"
+            android:textColorHint="@color/click_text"
+            android:inputType="textPassword"
+            android:singleLine="true"
+            android:paddingHorizontal="12dp"
+            android:textSize="13sp"/>
+
+        <Button
+            android:id="@+id/btnRegister"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_marginTop="12dp"
+            android:backgroundTint="@color/click_pink"
+            android:text="Register"
+            android:textAllCaps="false"
+            android:textColor="@color/click_white"/>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="14dp"
+            android:orientation="horizontal"
+            android:gravity="center">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Already have an account? "
+                android:textColor="@color/click_text"
+                android:textSize="14sp"/>
+
+            <TextView
+                android:id="@+id/tvLogin"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Login"
+                android:textColor="@color/click_pink"
+                android:textSize="14sp"
+                android:padding="4dp"/>
+
+        </LinearLayout>
+
+        <Space
+            android:layout_width="1dp"
+            android:layout_height="0dp"
+            android:layout_weight="1"/>
+
+        <ImageView
+            android:id="@+id/ivDinosaur"
+            android:layout_width="175dp"
+            android:layout_height="155dp"
+            android:src="@drawable/dinosaur"
+            android:contentDescription="Click2Eat Dinosaur Mascot"
+            android:scaleType="fitCenter"/>
+
+    </LinearLayout>
+</ScrollView>
