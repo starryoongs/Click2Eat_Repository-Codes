@@ -6,13 +6,13 @@
     android:orientation="vertical"
     android:background="#FCE3EC">
 
-    <!-- Click2Eat Header -->
+    <!-- Header -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="90dp"
+        android:orientation="horizontal"
         android:gravity="center_vertical"
-        android:paddingHorizontal="20dp"
-        android:orientation="horizontal">
+        android:paddingHorizontal="20dp">
 
         <TextView
             android:id="@+id/btnMenu"
@@ -20,107 +20,116 @@
             android:layout_height="48dp"
             android:gravity="center"
             android:text="☰"
+            android:textColor="#666666"
             android:textSize="32sp"
-            android:contentDescription="Open menu"/>
+            android:contentDescription="Open menu" />
 
-        <TextView
-            android:id="@+id/txtLogo"
+        <ImageView
+            android:id="@+id/imgClick2EatLogo"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="55dp"
             android:layout_weight="1"
-            android:gravity="center"
-            android:text="Click2Eat"
-            android:textColor="#F477B3"
-            android:textStyle="bold|italic"
-            android:textSize="28sp"/>
+            android:src="@drawable/click2eat_logo"
+            android:scaleType="fitCenter"
+            android:contentDescription="Click2Eat logo" />
 
-        <TextView
+        <ImageView
             android:id="@+id/btnProfile"
             android:layout_width="48dp"
             android:layout_height="48dp"
-            android:gravity="center"
-            android:text="●"
-            android:textColor="#F477B3"
-            android:textSize="30sp"
-            android:contentDescription="Profile"/>
+            android:src="@drawable/ic_profile"
+            android:scaleType="fitCenter"
+            android:contentDescription="Profile" />
 
     </LinearLayout>
 
-    <!-- Page Title -->
+    <!-- All Carts Title -->
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:paddingStart="24dp"
+        android:paddingTop="14dp"
+        android:paddingBottom="16dp"
         android:text="All Carts"
-        android:textSize="24sp"
-        android:textStyle="bold"
         android:textColor="#555555"
-        android:padding="24dp"/>
+        android:textSize="24sp"
+        android:textStyle="bold" />
 
-    <!-- Restaurant Cart List -->
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerRestaurantCarts"
+    <!-- Scrollable Restaurant List -->
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1"
-        android:paddingHorizontal="20dp"
-        android:clipToPadding="false"/>
+        android:layout_weight="1">
 
-    <!-- Empty Cart Message -->
-    <TextView
-        android:id="@+id/txtEmptyCart"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Your cart is empty."
-        android:textSize="16sp"
-        android:textColor="#666666"
-        android:gravity="center"
-        android:padding="20dp"
-        android:visibility="gone"/>
-
-    <!-- Bottom Navigation Placeholder -->
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="72dp"
-        android:orientation="horizontal"
-        android:gravity="center"
-        android:background="#FFFFFF">
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerRestaurantCarts"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingStart="20dp"
+            android:paddingEnd="20dp"
+            android:paddingTop="4dp"
+            android:paddingBottom="20dp"
+            android:clipToPadding="false" />
 
         <TextView
+            android:id="@+id/txtEmptyCart"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:padding="20dp"
+            android:text="Your cart is empty."
+            android:textColor="#666666"
+            android:textSize="16sp"
+            android:gravity="center"
+            android:visibility="gone" />
+
+    </FrameLayout>
+
+    <!-- Fixed Bottom Navigation -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="76dp"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:background="#FFFFFF"
+        android:paddingTop="6dp"
+        android:paddingBottom="6dp">
+
+        <ImageView
             android:id="@+id/navHome"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:gravity="center"
-            android:text="Home"
-            android:textColor="#F477B3"/>
+            android:padding="18dp"
+            android:src="@drawable/ic_nav_home"
+            android:contentDescription="Home" />
 
-        <TextView
+        <ImageView
             android:id="@+id/navCart"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:gravity="center"
-            android:text="Cart"
-            android:textColor="#F477B3"
-            android:textStyle="bold"/>
+            android:padding="18dp"
+            android:src="@drawable/ic_nav_cart"
+            android:contentDescription="Cart" />
 
-        <TextView
+        <ImageView
             android:id="@+id/navRestaurants"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:gravity="center"
-            android:text="Restaurants"
-            android:textColor="#F477B3"/>
+            android:padding="18dp"
+            android:src="@drawable/ic_nav_restaurants"
+            android:contentDescription="Restaurants" />
 
-        <TextView
+        <ImageView
             android:id="@+id/navOrders"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:gravity="center"
-            android:text="Orders"
-            android:textColor="#F477B3"/>
+            android:padding="18dp"
+            android:src="@drawable/ic_nav_orders"
+            android:contentDescription="Orders" />
 
     </LinearLayout>
 
