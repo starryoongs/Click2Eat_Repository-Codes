@@ -11,27 +11,49 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Click2Eat">
+
+        <!-- Login Screen -->
         <activity
             android:name=".auth.LoginActivity"
             android:exported="true">
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
         </activity>
+
+        <!-- Registration -->
         <activity
             android:name=".auth.RegisterActivity"
             android:exported="false" />
+
+        <!-- Profile -->
         <activity
             android:name=".auth.ProfileActivity"
             android:exported="false" />
+
+        <!-- Restaurant Cart Details -->
+        <activity
+            android:name=".RestaurantCartActivity"
+            android:exported="false" />
+
+        <!-- All Carts -->
+        <activity
+            android:name=".CartActivity"
+            android:exported="false" />
+
+        <!-- Checkout -->
         <activity
             android:name=".checkout.CheckoutActivity"
             android:exported="false" />
+
+        <!-- Order Confirmation -->
         <activity
             android:name=".checkout.OrderConfirmationActivity"
             android:exported="false" />
+
     </application>
 
 </manifest>
