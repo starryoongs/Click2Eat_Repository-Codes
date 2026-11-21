@@ -53,6 +53,12 @@
         <activity
             android:name=".checkout.OrderConfirmationActivity"
             android:exported="false" />
+        <activity
+            android:name=".orders.OrderHistoryActivity"
+            android:exported="false" />
+        <activity
+            android:name=".orders.OrderDetailsActivity"
+            android:exported="false" />
 
         <!-- Home and Restaurant Screens -->
         <activity
