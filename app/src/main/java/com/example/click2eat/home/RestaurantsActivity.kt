@@ -23,6 +23,9 @@ import com.example.click2eat.database.UserRepository
 
 class RestaurantsActivity : AppCompatActivity() {
 
+    companion object {
+        const val EXTRA_CATEGORY = "category"
+    }
     private val executor = Executors.newSingleThreadExecutor()
 
     private lateinit var repository: RestaurantRepository
@@ -105,7 +108,10 @@ class RestaurantsActivity : AppCompatActivity() {
             }
         }
 
-        loadRestaurants("")
+        val selectedCategory =
+            intent.getStringExtra(EXTRA_CATEGORY).orEmpty()
+
+        loadRestaurants(selectedCategory)
     }
 
     override fun onResume() {

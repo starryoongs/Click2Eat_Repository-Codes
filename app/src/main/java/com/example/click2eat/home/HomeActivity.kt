@@ -50,9 +50,16 @@ class HomeActivity : AppCompatActivity() {
             onRestaurantClick = ::openRestaurant
         )
 
-        categoryAdapter = CategoryAdapter(
-            onCategoryClick = { }
-        )
+        categoryAdapter = CategoryAdapter { category ->
+            startActivity(
+                Intent(this, RestaurantsActivity::class.java).apply {
+                    putExtra(
+                        RestaurantsActivity.EXTRA_CATEGORY,
+                        category.name
+                    )
+                }
+            )
+        }
 
         findViewById<RecyclerView>(
             R.id.rvCategories
