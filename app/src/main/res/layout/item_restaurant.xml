@@ -12,7 +12,7 @@
         android:layout_height="150dp"
         android:orientation="vertical"
         android:gravity="center"
-        android:background="@drawable/bg_pink_input">
+        android:background="#FFFFFF">
 
         <ImageView
             android:id="@+id/ivRestaurant"

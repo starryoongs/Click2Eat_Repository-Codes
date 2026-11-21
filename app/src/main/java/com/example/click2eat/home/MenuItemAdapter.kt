@@ -3,8 +3,8 @@ package com.example.click2eat.home
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import android.widget.ImageView
+import android.widget.ImageButton
 import android.widget.TextView
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
@@ -28,7 +28,7 @@ class MenuItemAdapter(
         private val description = itemView.findViewById<TextView>(R.id.tvMenuDescription)
         private val price = itemView.findViewById<TextView>(R.id.tvMenuPrice)
         private val availability = itemView.findViewById<TextView>(R.id.tvAvailability)
-        private val addButton = itemView.findViewById<Button>(R.id.btnAddToCart)
+        private val addButton = itemView.findViewById<ImageButton>(R.id.btnAddToCart)
         fun bind(menuItem: MenuItem) {
             name.text = menuItem.name
             description.text = menuItem.description.orEmpty()

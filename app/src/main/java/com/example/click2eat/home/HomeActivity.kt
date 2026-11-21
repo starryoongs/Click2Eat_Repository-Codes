@@ -5,6 +5,8 @@ import android.os.Bundle
 import android.view.View
 import android.widget.EditText
 import android.widget.ImageView
+import android.widget.TextView
+import com.example.click2eat.database.UserRepository
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -16,6 +18,8 @@ import com.example.click2eat.database.DatabaseSeeder
 import com.example.click2eat.database.MenuRepository
 import com.example.click2eat.database.RestaurantRepository
 import java.util.concurrent.Executors
+import android.net.Uri
+import java.io.File
 
 class HomeActivity : AppCompatActivity() {
 
@@ -117,23 +121,56 @@ class HomeActivity : AppCompatActivity() {
                 )
             )
         }
+    }
 
-        loadHomeData()
+    override fun onResume() {
+        super.onResume()
+
+        if (::session.isInitialized && session.isLoggedIn()) {
+            loadHomeData()
+        }
     }
 
     private fun loadHomeData() {
         executor.execute {
             DatabaseSeeder.seed(this)
 
-            val restaurants =
-                restaurantRepository
-                    .getAllRestaurants()
-                    .take(6)
+            val restaurants = restaurantRepository
+                .getAllRestaurants()
+                .take(6)
 
-            val categories =
-                menuRepository.getCategories()
+            val categories = menuRepository.getCategories()
+
+            val userId = session.getUserId()
+
+            val user = if (userId != -1L) {
+                UserRepository(this).getUserById(userId)
+            } else {
+                null
+            }
+
+            val profileFile = user?.profilePicture
+                ?.takeIf { it.isNotBlank() }
+                ?.let { File(filesDir, it) }
 
             runOnUiThread {
+                val firstName = user?.firstName?.trim().orEmpty()
+
+                findViewById<TextView>(R.id.tvUsername).text =
+                    if (firstName.isEmpty()) {
+                        "Hi,"
+                    } else {
+                        "Hi, $firstName"
+                    }
+
+                val profileImage = findViewById<ImageView>(R.id.ivProfile)
+
+                if (profileFile != null && profileFile.exists()) {
+                    profileImage.setImageURI(Uri.fromFile(profileFile))
+                } else {
+                    profileImage.setImageResource(R.drawable.default_profile2)
+                }
+
                 restaurantAdapter.submitList(restaurants)
                 categoryAdapter.submitList(categories)
             }

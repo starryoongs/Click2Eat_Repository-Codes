@@ -64,22 +64,25 @@ object DatabaseSeeder {
 
         val restaurantIds = mutableMapOf<String, Long>()
 
+
         addRestaurant(
             database,
             restaurantIds,
             "Burger King",
-            "Burgers, fries, and fast food",
+            "Burgers, fries, and fastfood",
             "burgerking",
-            "20-30 mins"
+            "20-30 mins",
+            "Fastfood, Burger, Beverage"
         )
 
         addRestaurant(
             database,
             restaurantIds,
             "Jollibee",
-            "Fast food favorites and chicken meals",
+            "Fastfood favorites and chicken meals",
             "jollibee",
-            "20-30 mins"
+            "20-30 mins",
+            "Fastfood, Burger, Beverage"
         )
 
         addRestaurant(
@@ -88,7 +91,8 @@ object DatabaseSeeder {
             "KFC",
             "Chicken meals and sides",
             "kfc",
-            "20-30 mins"
+            "20-30 mins",
+            "Fastfood, Burger, Beverage, Chicken"
         )
 
         addRestaurant(
@@ -97,16 +101,18 @@ object DatabaseSeeder {
             "McDo",
             "Burgers, chicken, and fries",
             "mcdo",
-            "20-30 mins"
+            "20-30 mins",
+            "Fastfood, Burger, Beverage, Chicken"
         )
 
         addRestaurant(
             database,
             restaurantIds,
             "Ramen Nagi",
-            "Japanese ramen and beverages",
+            "Japanese and beverages",
             "ramen_nagi",
-            "25-35 mins"
+            "25-35 mins",
+            "Japanese, Beverage"
         )
 
         addRestaurant(
@@ -115,7 +121,8 @@ object DatabaseSeeder {
             "Starbucks",
             "Coffee, pastries, and beverages",
             "starbucks",
-            "15-25 mins"
+            "15-25 mins",
+            "Coffee, Beverage, Pastry"
         )
 
         addRestaurant(
@@ -124,7 +131,8 @@ object DatabaseSeeder {
             "Tokyo Tokyo",
             "Japanese and beverages",
             "tokyo_tokyo",
-            "20-30 mins"
+            "20-30 mins",
+            "Japanese, Beverage"
         )
 
         addMenuItem(
@@ -170,7 +178,7 @@ object DatabaseSeeder {
         addMenuItem(
             database,
             restaurantIds["KFC"],
-            categoryIds["FastFood"],
+            categoryIds["Fastfood"],
             "Zinger Burger",
             "Yummy burger.",
             16000,
@@ -194,13 +202,15 @@ object DatabaseSeeder {
         name: String,
         description: String,
         image: String,
-        deliveryTime: String
+        deliveryTime: String,
+        category: String
     ) {
         val values = ContentValues().apply {
             put("name", name)
             put("description", description)
             put("image", image)
             put("delivery_time", deliveryTime)
+            put("category", category)
         }
 
         val id = database.insert(

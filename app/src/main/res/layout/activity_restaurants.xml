@@ -46,8 +46,10 @@
                     android:layout_width="47dp"
                     android:layout_height="47dp"
                     android:layout_marginEnd="13dp"
+                    android:background="@drawable/bg_profile_circle"
+                    android:clipToOutline="true"
                     android:contentDescription="Open profile"
-                    android:scaleType="centerInside"
+                    android:scaleType="centerCrop"
                     android:src="@drawable/default_profile2" />
 
             </LinearLayout>
@@ -85,7 +87,7 @@
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rvCategories"
                 android:layout_width="match_parent"
-                android:layout_height="230dp"
+                android:layout_height="201dp"
                 android:layout_marginTop="18dp"
                 android:nestedScrollingEnabled="false" />
 

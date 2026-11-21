@@ -103,9 +103,10 @@ class RestaurantRepository(context: Context) {
             FROM restaurants
             WHERE LOWER(name) LIKE ?
                OR LOWER(COALESCE(description, '')) LIKE ?
+               OR LOWER(COALESCE(category, '')) LIKE ?
             ORDER BY name ASC
             """.trimIndent(),
-            arrayOf(searchKeyword, searchKeyword)
+            arrayOf(searchKeyword, searchKeyword, searchKeyword)
         ).use { cursor ->
 
             while (cursor.moveToNext()) {
