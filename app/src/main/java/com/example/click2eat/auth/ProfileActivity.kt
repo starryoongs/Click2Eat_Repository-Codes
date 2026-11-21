@@ -9,10 +9,12 @@ import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
+import android.view.View
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import com.example.click2eat.R
 import com.example.click2eat.database.UserRepository
+import com.example.click2eat.home.HomeActivity
 import com.example.click2eat.utils.ValidationUtils
 import java.io.File
 import java.util.concurrent.Executors
@@ -64,6 +66,24 @@ class ProfileActivity : AppCompatActivity() {
         }
 
         setContentView(R.layout.activity_profile)
+
+        val backHome = findViewById<Button>(
+            R.id.btnBackHome
+        )
+
+        backHome.setOnClickListener {
+            val intent = Intent(
+                this,
+                HomeActivity::class.java
+            ).apply {
+                flags =
+                    Intent.FLAG_ACTIVITY_CLEAR_TOP or
+                            Intent.FLAG_ACTIVITY_SINGLE_TOP
+            }
+
+            startActivity(intent)
+            finish()
+        }
 
         repository = UserRepository(this)
 
@@ -181,15 +201,6 @@ class ProfileActivity : AppCompatActivity() {
                     }
                 }
             }
-        }
-
-        // BACK TO HOME
-        val backHome = findViewById<Button>(R.id.btnBackHome)
-
-        backHome.setOnClickListener {
-            // Connect to HomeActivity when Member 2's
-            // Home screen is available.
-            finish()
         }
     }
 

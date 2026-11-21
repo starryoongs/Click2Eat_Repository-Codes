@@ -9,6 +9,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.click2eat.R
 import com.example.click2eat.database.UserRepository
+import com.example.click2eat.home.HomeActivity
 import java.util.concurrent.Executors
 
 class LoginActivity : AppCompatActivity() {

@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="6dp"
+    android:orientation="vertical"
+    android:padding="10dp"
+    android:background="#F8C7D5">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:background="@drawable/bg_pink_input">
+
+        <ImageView
+            android:id="@+id/ivRestaurant"
+            android:layout_width="150dp"
+            android:layout_height="75dp"
+            android:scaleType="centerInside"
+            android:src="@drawable/click2eat_logo_no_bg"
+            android:contentDescription="Restaurant logo" />
+
+        <TextView
+            android:id="@+id/tvRestaurantName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_marginTop="10dp"
+            android:textStyle="bold"
+            android:textSize="14sp"
+            android:textColor="@color/click_text" />
+
+        <TextView
+            android:id="@+id/tvRestaurantDescription"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:visibility="gone" />
+
+        <TextView
+            android:id="@+id/tvDeliveryTime"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:visibility="gone" />
+
+    </LinearLayout>
+</LinearLayout>
