@@ -19,6 +19,7 @@ import com.example.click2eat.home.HomeActivity
 import com.example.click2eat.home.RestaurantsActivity
 import android.net.Uri
 import java.io.File
+import com.example.click2eat.auth.ProfileActivity
 import com.example.click2eat.auth.SessionManager
 import com.example.click2eat.database.UserRepository
 import java.util.concurrent.Executors
@@ -40,6 +41,12 @@ class SearchActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         setContentView(R.layout.activity_search)
+
+        findViewById<ImageView>(R.id.ivProfile).setOnClickListener {
+            startActivity(
+                Intent(this, ProfileActivity::class.java)
+            )
+        }
 
         findViewById<ImageButton>(R.id.btnHome).setOnClickListener {
             startActivity(
