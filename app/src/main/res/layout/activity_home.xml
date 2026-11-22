@@ -292,18 +292,24 @@
 
         <ImageButton
             android:id="@+id/btnHome"
-            android:layout_width="6dp"
-            android:layout_height="70dp"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
             android:layout_weight="1"
             android:background="@android:color/transparent"
             android:contentDescription="Home"
+            android:padding="16dp"
+            android:scaleType="centerInside"
             android:src="@drawable/dashboard_icon" />
 
-        <ImageButton android:layout_width="0dp"
+        <ImageButton
+            android:id="@+id/btnCart"
+            android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:background="@android:color/transparent"
             android:contentDescription="Cart"
+            android:padding="16dp"
+            android:scaleType="centerInside"
             android:src="@drawable/cart_icon" />
 
         <ImageButton
@@ -313,14 +319,19 @@
             android:layout_weight="1"
             android:background="@android:color/transparent"
             android:contentDescription="Restaurants"
+            android:padding="16dp"
+            android:scaleType="centerInside"
             android:src="@drawable/restaurants_icon" />
 
         <ImageButton
+            android:id="@+id/btnOrders"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:background="@android:color/transparent"
-            android:contentDescription="Orders"
+            android:contentDescription="Order history"
+            android:padding="17dp"
+            android:scaleType="centerInside"
             android:src="@drawable/history_icon" />
 
     </LinearLayout>
