@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.click2eat.CartActivity
 import com.example.click2eat.R
+import com.example.click2eat.auth.ProfileActivity
 import com.example.click2eat.auth.SessionManager
 import com.example.click2eat.database.CartRepository
 import com.example.click2eat.database.DatabaseSeeder
@@ -35,7 +36,15 @@ class RestaurantActivity : AppCompatActivity() {
         setContentView(R.layout.activity_restaurant)
 
         findViewById<ImageButton>(R.id.btnCart)?.setOnClickListener {
-            startActivity(Intent(this, CartActivity::class.java))
+            startActivity(
+                Intent(this, CartActivity::class.java)
+            )
+        }
+
+        findViewById<ImageView>(R.id.ivProfile).setOnClickListener {
+            startActivity(
+                Intent(this, ProfileActivity::class.java)
+            )
         }
 
         findViewById<ImageButton>(R.id.btnRestaurants).setOnClickListener {
