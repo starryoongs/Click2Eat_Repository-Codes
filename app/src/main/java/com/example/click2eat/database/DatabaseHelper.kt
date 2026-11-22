@@ -10,7 +10,7 @@ class DatabaseHelper(context: Context) :
 
     companion object {
         const val DATABASE_NAME = "click2eat.db"
-        const val DATABASE_VERSION = 2
+        const val DATABASE_VERSION = 3
     }
 
     override fun onConfigure(db: SQLiteDatabase) {
@@ -42,7 +42,8 @@ class DatabaseHelper(context: Context) :
                 name TEXT NOT NULL,
                 description TEXT,
                 image TEXT,
-                delivery_time TEXT
+                delivery_time TEXT,
+                category TEXT NOT NULL DEFAULT ''
             )
         """.trimIndent())
 
@@ -140,6 +141,12 @@ class DatabaseHelper(context: Context) :
         if (oldVersion < 2) {
             db.execSQL(
                 "ALTER TABLE users ADD COLUMN profile_picture TEXT"
+            )
+        }
+
+        if (oldVersion < 3) {
+            db.execSQL(
+                "ALTER TABLE restaurants ADD COLUMN category TEXT NOT NULL DEFAULT ''"
             )
         }
     }

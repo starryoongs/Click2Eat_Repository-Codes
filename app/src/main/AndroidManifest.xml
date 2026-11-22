@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools">
+
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
 
     <application
         android:allowBackup="true"
@@ -52,6 +52,23 @@
         <!-- Order Confirmation -->
         <activity
             android:name=".checkout.OrderConfirmationActivity"
+            android:exported="false" />
+
+        <!-- Home and Restaurant Screens -->
+        <activity
+            android:name=".home.HomeActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".home.RestaurantsActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".home.RestaurantActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".home.SearchActivity"
             android:exported="false" />
 
     </application>

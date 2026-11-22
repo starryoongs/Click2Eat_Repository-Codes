@@ -9,6 +9,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.click2eat.R
 import com.example.click2eat.database.UserRepository
+import com.example.click2eat.home.HomeActivity
 import java.util.concurrent.Executors
 
 class LoginActivity : AppCompatActivity() {
@@ -23,7 +24,7 @@ class LoginActivity : AppCompatActivity() {
         sessionManager = SessionManager(this)
 
         if (sessionManager.isLoggedIn()) {
-            openProfile()
+            openHome()
             return
         }
 
@@ -31,12 +32,8 @@ class LoginActivity : AppCompatActivity() {
 
         repository = UserRepository(this)
 
-        val identifier = findViewById<EditText>(
-            R.id.etIdentifier
-        )
-        val password = findViewById<EditText>(
-            R.id.etPassword
-        )
+        val identifier = findViewById<EditText>(R.id.etIdentifier)
+        val password = findViewById<EditText>(R.id.etPassword)
         val login = findViewById<Button>(R.id.btnLogin)
         val register = findViewById<TextView>(R.id.tvRegister)
 
@@ -58,17 +55,14 @@ class LoginActivity : AppCompatActivity() {
 
             executor.execute {
                 try {
-                    val userId = repository.authenticateUser(
-                        input,
-                        pass
-                    )
+                    val userId = repository.authenticateUser(input, pass)
 
                     runOnUiThread {
                         login.isEnabled = true
 
                         if (userId != null) {
                             sessionManager.saveLoginSession(userId)
-                            openProfile()
+                            openHome()
                         } else {
                             Toast.makeText(
                                 this,
@@ -80,6 +74,7 @@ class LoginActivity : AppCompatActivity() {
                 } catch (e: Exception) {
                     runOnUiThread {
                         login.isEnabled = true
+
                         Toast.makeText(
                             this,
                             "Unable to log in. Please try again.",
@@ -97,10 +92,13 @@ class LoginActivity : AppCompatActivity() {
         }
     }
 
-    private fun openProfile() {
-        startActivity(
-            Intent(this, ProfileActivity::class.java)
-        )
+    private fun openHome() {
+        val intent = Intent(this, HomeActivity::class.java).apply {
+            flags = Intent.FLAG_ACTIVITY_NEW_TASK or
+                    Intent.FLAG_ACTIVITY_CLEAR_TASK
+        }
+
+        startActivity(intent)
         finish()
     }
 
