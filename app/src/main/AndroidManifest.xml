@@ -1,3 +1,4 @@
+
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
@@ -34,14 +35,34 @@
             android:name=".auth.ProfileActivity"
             android:exported="false" />
 
-        <!-- Restaurant Cart Details -->
+        <!-- Home -->
         <activity
-            android:name=".RestaurantCartActivity"
+            android:name=".home.HomeActivity"
+            android:exported="false" />
+
+        <!-- Restaurants -->
+        <activity
+            android:name=".home.RestaurantsActivity"
+            android:exported="false" />
+
+        <!-- Restaurant Menu -->
+        <activity
+            android:name=".home.RestaurantActivity"
+            android:exported="false" />
+
+        <!-- Search -->
+        <activity
+            android:name=".home.SearchActivity"
             android:exported="false" />
 
         <!-- All Carts -->
         <activity
             android:name=".CartActivity"
+            android:exported="false" />
+
+        <!-- Restaurant Cart Details -->
+        <activity
+            android:name=".RestaurantCartActivity"
             android:exported="false" />
 
         <!-- Checkout -->
@@ -54,21 +75,14 @@
             android:name=".checkout.OrderConfirmationActivity"
             android:exported="false" />
 
-        <!-- Home and Restaurant Screens -->
+        <!-- Order History -->
         <activity
-            android:name=".home.HomeActivity"
+            android:name=".orders.OrderHistoryActivity"
             android:exported="false" />
 
+        <!-- Order Details -->
         <activity
-            android:name=".home.RestaurantsActivity"
-            android:exported="false" />
-
-        <activity
-            android:name=".home.RestaurantActivity"
-            android:exported="false" />
-
-        <activity
-            android:name=".home.SearchActivity"
+            android:name=".orders.OrderDetailsActivity"
             android:exported="false" />
 
     </application>
