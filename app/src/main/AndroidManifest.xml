@@ -28,6 +28,8 @@
         <activity
             android:name=".auth.RegisterActivity"
             android:exported="false" />
+
+        <!-- Profile -->
         <activity
             android:name=".auth.ProfileActivity"
             android:exported="false" />
@@ -53,6 +55,27 @@
             android:exported="false" />
 
 
+        <!-- Restaurant Cart Details -->
+        <activity
+            android:name=".RestaurantCartActivity"
+            android:exported="false" />
+
+        <!-- All Carts -->
+        <activity
+            android:name=".CartActivity"
+            android:exported="false" />
+
+        <!-- Checkout -->
+        <activity
+            android:name=".checkout.CheckoutActivity"
+            android:exported="false" />
+
+        <!-- Order Confirmation -->
+        <activity
+            android:name=".checkout.OrderConfirmationActivity"
+            android:exported="false" />
+
+        <!-- Home and Restaurant Screens -->
         <activity
             android:name=".home.HomeActivity"
             android:exported="false" />
