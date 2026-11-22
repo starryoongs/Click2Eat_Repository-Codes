@@ -30,7 +30,7 @@
             android:layout_width="0dp"
             android:layout_height="55dp"
             android:layout_weight="1"
-            android:src="@drawable/click2eat_logo"
+            android:src="@drawable/click2eat_logo_no_bg"
             android:scaleType="fitCenter"
             android:contentDescription="Click2Eat logo" />
 
