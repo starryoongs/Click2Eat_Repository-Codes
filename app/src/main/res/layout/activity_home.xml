@@ -297,7 +297,7 @@
             android:layout_weight="1"
             android:background="@android:color/transparent"
             android:contentDescription="Home"
-            android:padding="16dp"
+            android:padding="20dp"
             android:scaleType="centerInside"
             android:src="@drawable/dashboard_icon" />
 
@@ -308,7 +308,7 @@
             android:layout_weight="1"
             android:background="@android:color/transparent"
             android:contentDescription="Cart"
-            android:padding="16dp"
+            android:padding="20dp"
             android:scaleType="centerInside"
             android:src="@drawable/cart_icon" />
 
@@ -319,7 +319,7 @@
             android:layout_weight="1"
             android:background="@android:color/transparent"
             android:contentDescription="Restaurants"
-            android:padding="16dp"
+            android:padding="20dp"
             android:scaleType="centerInside"
             android:src="@drawable/restaurants_icon" />
 
@@ -330,7 +330,7 @@
             android:layout_weight="1"
             android:background="@android:color/transparent"
             android:contentDescription="Order history"
-            android:padding="17dp"
+            android:padding="21dp"
             android:scaleType="centerInside"
             android:src="@drawable/history_icon" />
 
