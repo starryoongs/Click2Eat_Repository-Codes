@@ -1,4 +1,3 @@
-
 package com.example.click2eat
 
 import android.content.Intent
@@ -6,12 +5,16 @@ import android.os.Bundle
 import android.view.View
 import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.click2eat.adapters.RestaurantCartAdapter
+import com.example.click2eat.auth.ProfileActivity
 import com.example.click2eat.auth.SessionManager
 import com.example.click2eat.database.CartRepository
+import com.example.click2eat.home.HomeActivity
+import com.example.click2eat.home.RestaurantsActivity
 
 class CartActivity : AppCompatActivity() {
 
@@ -45,19 +48,26 @@ class CartActivity : AppCompatActivity() {
         userId = sessionUserId.toInt()
         cartRepository = CartRepository(this)
 
+        setupNavigation()
+
         recyclerRestaurantCarts =
             findViewById(R.id.recyclerRestaurantCarts)
 
         txtEmptyCart = findViewById(R.id.txtEmptyCart)
 
-        restaurantCartAdapter = RestaurantCartAdapter { restaurantId ->
-            val intent = Intent(
-                this,
-                RestaurantCartActivity::class.java
-            )
-            intent.putExtra("restaurant_id", restaurantId)
-            startActivity(intent)
-        }
+        restaurantCartAdapter = RestaurantCartAdapter(
+            onViewCart = { restaurantId ->
+                val intent = Intent(
+                    this,
+                    RestaurantCartActivity::class.java
+                )
+                intent.putExtra("restaurant_id", restaurantId)
+                startActivity(intent)
+            },
+            onClearRestaurantCart = { restaurantId, restaurantName ->
+                confirmClearRestaurantCart(restaurantId, restaurantName)
+            }
+        )
 
         recyclerRestaurantCarts.layoutManager =
             LinearLayoutManager(this)
@@ -65,6 +75,53 @@ class CartActivity : AppCompatActivity() {
         recyclerRestaurantCarts.adapter = restaurantCartAdapter
 
         loadCartItems()
+    }
+
+    private fun confirmClearRestaurantCart(restaurantId: Int, restaurantName: String) {
+        AlertDialog.Builder(this)
+            .setTitle("Clear Restaurant Cart")
+            .setMessage("Are you sure you want to remove all items from $restaurantName?")
+            .setPositiveButton("Clear Cart") { _, _ ->
+                val cleared = cartRepository.clearRestaurantCart(userId, restaurantId)
+                if (cleared) {
+                    Toast.makeText(
+                        this,
+                        "Restaurant cart cleared successfully",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    loadCartItems()
+                } else {
+                    Toast.makeText(
+                        this,
+                        "Unable to clear restaurant cart",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            }
+            .setNegativeButton("Cancel", null)
+            .show()
+    }
+
+    private fun setupNavigation() {
+        findViewById<View>(R.id.navHome)?.setOnClickListener {
+            val intent = Intent(this, HomeActivity::class.java).apply {
+                flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
+            }
+            startActivity(intent)
+            finish()
+        }
+
+        findViewById<View>(R.id.navRestaurants)?.setOnClickListener {
+            val intent = Intent(this, RestaurantsActivity::class.java).apply {
+                flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
+            }
+            startActivity(intent)
+            finish()
+        }
+
+        findViewById<View>(R.id.btnProfile)?.setOnClickListener {
+            startActivity(Intent(this, ProfileActivity::class.java))
+        }
     }
 
     private fun loadCartItems() {
