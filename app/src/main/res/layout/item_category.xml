@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="90dp"
+    android:layout_margin="5dp"
+    android:background="@drawable/bg_profile_card"
+    android:gravity="center"
+    android:orientation="vertical"
+    android:padding="6dp">
+
+    <ImageView
+        android:id="@+id/ivCategory"
+        android:layout_width="55dp"
+        android:layout_height="55dp"
+        android:contentDescription="Category image"
+        android:scaleType="centerInside" />
+
+    <TextView
+        android:id="@+id/tvCategoryName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:textColor="@color/click_text"
+        android:textSize="12sp" />
+
+</LinearLayout>

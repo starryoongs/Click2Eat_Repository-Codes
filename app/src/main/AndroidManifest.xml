@@ -28,8 +28,6 @@
         <activity
             android:name=".auth.RegisterActivity"
             android:exported="false" />
-
-        <!-- Profile -->
         <activity
             android:name=".auth.ProfileActivity"
             android:exported="false" />
@@ -52,6 +50,23 @@
         <!-- Order Confirmation -->
         <activity
             android:name=".checkout.OrderConfirmationActivity"
+            android:exported="false" />
+
+
+        <activity
+            android:name=".home.HomeActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".home.RestaurantsActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".home.RestaurantActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".home.SearchActivity"
             android:exported="false" />
 
     </application>

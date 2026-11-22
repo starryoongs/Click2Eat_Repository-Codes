@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FDE1EB"
+    android:orientation="vertical">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:fillViewport="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingStart="20dp"
+            android:paddingTop="25dp"
+            android:paddingEnd="18dp"
+            android:paddingBottom="20dp">
+
+            <!-- Header -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="71dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="28dp"
+                    android:layout_height="30dp"
+                    android:layout_marginLeft="9dp"
+                    android:contentDescription="Search icon"
+                    android:src="@drawable/three_line_icon" />
+
+                <ImageView
+                    android:layout_width="0dp"
+                    android:layout_height="58dp"
+                    android:layout_weight="1"
+                    android:contentDescription="Click2Eat logo"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/click2eat_logo_no_bg" />
+
+                <ImageView
+                    android:id="@+id/ivProfile"
+                    android:layout_width="47dp"
+                    android:layout_height="47dp"
+                    android:layout_marginEnd="13dp"
+                    android:background="@drawable/bg_profile_circle"
+                    android:clipToOutline="true"
+                    android:contentDescription="Open profile"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/default_profile2" />
+
+            </LinearLayout>
+
+            <!-- Restaurant card -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="120dp"
+                android:layout_marginTop="18dp"
+                android:background="@drawable/bg_profile_card"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingStart="12dp"
+                android:paddingEnd="10dp">
+
+                <ImageView
+                    android:id="@+id/ivRestaurantImage"
+                    android:layout_width="90dp"
+                    android:layout_height="90dp"
+                    android:layout_marginStart="8dp"
+                    android:contentDescription="Restaurant image"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/mcdo" />
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    android:paddingStart="8dp">
+
+                    <TextView
+                        android:id="@+id/tvRestaurantName"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/click_text"
+                        android:textSize="20sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/tvDeliveryTime"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:textColor="@color/click_text"
+                        android:textSize="13sp" />
+
+                    <!-- Required by RestaurantActivity.kt but hidden from design -->
+                    <TextView
+                        android:id="@+id/tvRestaurantDescription"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:visibility="gone" />
+
+                </LinearLayout>
+
+                <ImageView
+                    android:layout_width="80dp"
+                    android:layout_height="100dp"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginEnd="20dp"
+                    android:contentDescription="Mascot"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/mascot" />
+
+            </LinearLayout>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvMenuItems"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="18dp"
+                android:nestedScrollingEnabled="false" />
+
+        </LinearLayout>
+
+    </ScrollView>
+
+    <!-- Bottom navigation -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:background="@color/click_white"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <ImageButton
+            android:id="@+id/btnHome"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@android:color/transparent"
+            android:contentDescription="Home"
+            android:padding="16dp"
+            android:scaleType="centerInside"
+            android:src="@drawable/dashboard_icon" />
+
+        <ImageButton
+            android:id="@+id/btnCart"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@android:color/transparent"
+            android:contentDescription="Cart"
+            android:padding="16dp"
+            android:scaleType="centerInside"
+            android:src="@drawable/cart_icon" />
+
+        <ImageButton
+            android:id="@+id/btnRestaurants"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@android:color/transparent"
+            android:contentDescription="Restaurants"
+            android:padding="16dp"
+            android:scaleType="centerInside"
+            android:src="@drawable/restaurants_icon" />
+
+        <ImageButton
+            android:id="@+id/btnOrders"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@android:color/transparent"
+            android:contentDescription="Order history"
+            android:padding="17dp"
+            android:scaleType="centerInside"
+            android:src="@drawable/history_icon" />
+
+    </LinearLayout>
+
+</LinearLayout>
