@@ -88,48 +88,54 @@
     <!-- Fixed Bottom Navigation -->
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="76dp"
-        android:orientation="horizontal"
+        android:layout_height="70dp"
+        android:background="@color/click_white"
         android:gravity="center"
-        android:background="#FFFFFF"
-        android:paddingTop="6dp"
-        android:paddingBottom="6dp">
+        android:orientation="horizontal">
 
-        <ImageView
+        <ImageButton
             android:id="@+id/navHome"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:padding="18dp"
-            android:src="@drawable/ic_nav_home"
-            android:contentDescription="Home" />
+            android:background="@android:color/transparent"
+            android:contentDescription="Home"
+            android:padding="16dp"
+            android:scaleType="centerInside"
+            android:src="@drawable/dashboard_icon" />
 
-        <ImageView
+        <ImageButton
             android:id="@+id/navCart"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:padding="18dp"
-            android:src="@drawable/ic_nav_cart"
-            android:contentDescription="Cart" />
+            android:background="@android:color/transparent"
+            android:contentDescription="Cart"
+            android:padding="16dp"
+            android:scaleType="centerInside"
+            android:src="@drawable/cart_icon" />
 
-        <ImageView
+        <ImageButton
             android:id="@+id/navRestaurants"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:padding="18dp"
-            android:src="@drawable/ic_nav_restaurants"
-            android:contentDescription="Restaurants" />
+            android:background="@android:color/transparent"
+            android:contentDescription="Restaurants"
+            android:padding="16dp"
+            android:scaleType="centerInside"
+            android:src="@drawable/restaurants_icon" />
 
-        <ImageView
+        <ImageButton
             android:id="@+id/navOrders"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:padding="18dp"
-            android:src="@drawable/ic_nav_orders"
-            android:contentDescription="Orders" />
+            android:background="@android:color/transparent"
+            android:contentDescription="Order history"
+            android:padding="17dp"
+            android:scaleType="centerInside"
+            android:src="@drawable/history_icon" />
 
     </LinearLayout>
 

@@ -2,7 +2,6 @@ package com.example.click2eat.database
 
 import android.content.ContentValues
 import android.content.Context
-import android.database.sqlite.SQLiteDatabase
 import com.example.click2eat.models.Order
 import com.example.click2eat.models.OrderItem
 
@@ -13,59 +12,63 @@ class CheckoutRepository(context: Context) {
     data class CheckoutSummary(
         val restaurantId: Int,
         val restaurantName: String,
+        val restaurantImage: String,
         val deliveryTime: String,
         val items: List<OrderItem>,
         val totalCentavos: Int
     )
 
     sealed class PlaceOrderResult {
-        data class Success(val orderId: Long, val restaurantName: String, val totalCentavos: Int) : PlaceOrderResult()
+        data class Success(
+            val orderId: Long,
+            val restaurantName: String,
+            val totalCentavos: Int
+        ) : PlaceOrderResult()
+
         data class Error(val message: String) : PlaceOrderResult()
     }
 
     /**
-     * Loads cart items for a specific user & restaurant.
-     * If restaurantId == -1 or no cart items exist yet (before Members 2 & 3 finish),
-     * seeds temporary placeholder records into SQLite so checkout & transactions can be tested.
+     * Loads the selected restaurant's cart items for the logged-in user directly from SQLite.
      */
-    fun getCheckoutSummary(userId: Int, requestedRestaurantId: Int): CheckoutSummary? {
-        val db = dbHelper.writableDatabase
+    fun getCheckoutSummary(userId: Int, restaurantId: Int): CheckoutSummary? {
+        if (userId <= 0 || restaurantId <= 0) return null
 
-        var targetRestaurantId = requestedRestaurantId
-        if (targetRestaurantId <= 0) {
-            targetRestaurantId = findFirstCartRestaurantId(db, userId)
-                ?: seedTemporaryPlaceholderData(db, userId)
-        }
+        val db = dbHelper.readableDatabase
 
-        // Fetch restaurant details
-        var restaurantName = "McDo - Fastfood"
+        var restaurantName = ""
+        var restaurantImage = ""
         var deliveryTime = "20-30 mins"
+
         db.rawQuery(
-            "SELECT name, delivery_time FROM restaurants WHERE id = ?",
-            arrayOf(targetRestaurantId.toString())
+            "SELECT name, image, delivery_time FROM restaurants WHERE id = ?",
+            arrayOf(restaurantId.toString())
         ).use { cursor ->
             if (cursor.moveToFirst()) {
-                restaurantName = cursor.getString(0) ?: restaurantName
-                deliveryTime = cursor.getString(1) ?: deliveryTime
+                restaurantName = cursor.getString(0) ?: ""
+                restaurantImage = cursor.getString(1) ?: ""
+                deliveryTime = cursor.getString(2) ?: "20-30 mins"
+            } else {
+                return null
             }
         }
 
-        // Fetch current cart items joined with menu_items for live prices & availability
         val items = mutableListOf<OrderItem>()
         val query = """
-            SELECT c.menu_item_id, m.name, m.description, m.price, c.quantity
+            SELECT c.menu_item_id, m.name, m.description, m.image, m.price, c.quantity
             FROM cart_items c
             INNER JOIN menu_items m ON c.menu_item_id = m.id
             WHERE c.user_id = ? AND m.restaurant_id = ?
         """.trimIndent()
 
-        db.rawQuery(query, arrayOf(userId.toString(), targetRestaurantId.toString())).use { cursor ->
+        db.rawQuery(query, arrayOf(userId.toString(), restaurantId.toString())).use { cursor ->
             while (cursor.moveToNext()) {
                 val menuItemId = cursor.getInt(0)
-                val name = cursor.getString(1)
+                val name = cursor.getString(1) ?: ""
                 val desc = cursor.getString(2) ?: ""
-                val priceCentavos = cursor.getInt(3)
-                val qty = cursor.getInt(4)
+                val image = cursor.getString(3) ?: ""
+                val priceCentavos = cursor.getInt(4)
+                val qty = cursor.getInt(5)
 
                 if (qty > 0) {
                     items.add(
@@ -73,6 +76,7 @@ class CheckoutRepository(context: Context) {
                             menuItemId = menuItemId,
                             foodName = name,
                             foodDescription = desc,
+                            imageResName = image,
                             quantity = qty,
                             priceCentavos = priceCentavos
                         )
@@ -83,22 +87,22 @@ class CheckoutRepository(context: Context) {
 
         if (items.isEmpty()) return null
 
-        val totalCentavos = items.sumOf { it.subtotalCentavos }
         return CheckoutSummary(
-            restaurantId = targetRestaurantId,
+            restaurantId = restaurantId,
             restaurantName = restaurantName,
+            restaurantImage = restaurantImage,
             deliveryTime = deliveryTime,
             items = items,
-            totalCentavos = totalCentavos
+            totalCentavos = items.sumOf { it.subtotalCentavos }
         )
     }
 
     /**
-     * Executes Member 4's atomic checkout transaction:
-     * 1. Revalidates non-empty cart, single restaurant, and item availability in SQLite
-     * 2. Recalculates total from SQLite
-     * 3. Inserts order ('Pending', Unix epoch ms) and order_items
-     * 4. Deletes purchased cart_items for that restaurant
+     * Atomic SQLite transaction for Member 4:
+     * 1. Revalidates restaurant, non-empty cart, single-restaurant rule, and item availability
+     * 2. Recalculates total in centavos from SQLite
+     * 3. Inserts into orders (total_price, order_date, 'Pending') and order_items
+     * 4. Deletes purchased cart_items ONLY for this user and restaurant
      */
     fun placeOrderAtomic(
         userId: Int,
@@ -106,26 +110,31 @@ class CheckoutRepository(context: Context) {
         deliveryAddress: String,
         contactNumber: String
     ): PlaceOrderResult {
+        if (userId <= 0) {
+            return PlaceOrderResult.Error("Please log in before placing an order.")
+        }
+        if (restaurantId <= 0) {
+            return PlaceOrderResult.Error("Invalid restaurant selected.")
+        }
+
         val db = dbHelper.writableDatabase
         db.beginTransaction()
         try {
-            // 1. Revalidate cart items, availability, and single-restaurant restriction
-            val verifiedItems = mutableListOf<OrderItem>()
             var restaurantName = ""
-
             db.rawQuery(
                 "SELECT name FROM restaurants WHERE id = ?",
                 arrayOf(restaurantId.toString())
             ).use { rCursor ->
                 if (rCursor.moveToFirst()) {
-                    restaurantName = rCursor.getString(0)
+                    restaurantName = rCursor.getString(0) ?: ""
                 } else {
                     return PlaceOrderResult.Error("Selected restaurant no longer exists.")
                 }
             }
 
+            val verifiedItems = mutableListOf<OrderItem>()
             val cartQuery = """
-                SELECT c.id, c.menu_item_id, m.name, m.price, m.available, m.restaurant_id, c.quantity
+                SELECT c.menu_item_id, m.name, m.price, m.available, m.restaurant_id, c.quantity
                 FROM cart_items c
                 INNER JOIN menu_items m ON c.menu_item_id = m.id
                 WHERE c.user_id = ? AND m.restaurant_id = ?
@@ -133,21 +142,21 @@ class CheckoutRepository(context: Context) {
 
             db.rawQuery(cartQuery, arrayOf(userId.toString(), restaurantId.toString())).use { cursor ->
                 while (cursor.moveToNext()) {
-                    val menuItemId = cursor.getInt(1)
-                    val foodName = cursor.getString(2)
-                    val priceCentavos = cursor.getInt(3)
-                    val isAvailable = cursor.getInt(4) == 1
-                    val itemRestaurantId = cursor.getInt(5)
-                    val quantity = cursor.getInt(6)
+                    val menuItemId = cursor.getInt(0)
+                    val foodName = cursor.getString(1) ?: ""
+                    val priceCentavos = cursor.getInt(2)
+                    val isAvailable = cursor.getInt(3) == 1
+                    val itemRestaurantId = cursor.getInt(4)
+                    val quantity = cursor.getInt(5)
 
                     if (itemRestaurantId != restaurantId) {
-                        return PlaceOrderResult.Error("Cart contains items from multiple restaurants.")
+                        return PlaceOrderResult.Error("Cart items must belong to a single restaurant.")
                     }
                     if (!isAvailable) {
-                        return PlaceOrderResult.Error("$foodName is currently unavailable.")
+                        return PlaceOrderResult.Error("$foodName is no longer available.")
                     }
                     if (quantity <= 0) {
-                        return PlaceOrderResult.Error("Invalid quantity found for $foodName.")
+                        return PlaceOrderResult.Error("Invalid quantity for $foodName.")
                     }
 
                     verifiedItems.add(
@@ -165,27 +174,24 @@ class CheckoutRepository(context: Context) {
                 return PlaceOrderResult.Error("Your cart is empty.")
             }
 
-            // 2. Recalculate order total using current SQLite records
             val recalculatedTotalCentavos = verifiedItems.sumOf { it.subtotalCentavos }
             val timestampMillis = System.currentTimeMillis()
 
-            // 3. Insert into orders table
             val orderValues = ContentValues().apply {
                 put("user_id", userId)
                 put("restaurant_id", restaurantId)
-                put("total_amount", recalculatedTotalCentavos)
+                put("total_price", recalculatedTotalCentavos)
                 put("delivery_address", deliveryAddress.trim())
                 put("contact_number", contactNumber.trim())
                 put("status", "Pending")
-                put("created_at", timestampMillis)
+                put("order_date", timestampMillis)
             }
 
             val generatedOrderId = db.insertOrThrow("orders", null, orderValues)
             if (generatedOrderId == -1L) {
-                return PlaceOrderResult.Error("Failed to generate order record.")
+                return PlaceOrderResult.Error("Failed to create order.")
             }
 
-            // 4. Insert each item into order_items
             for (item in verifiedItems) {
                 val itemValues = ContentValues().apply {
                     put("order_id", generatedOrderId)
@@ -195,11 +201,11 @@ class CheckoutRepository(context: Context) {
                 }
                 val rowId = db.insertOrThrow("order_items", null, itemValues)
                 if (rowId == -1L) {
-                    return PlaceOrderResult.Error("Failed to save ordered item: ${item.foodName}")
+                    return PlaceOrderResult.Error("Failed to save item: ${item.foodName}")
                 }
             }
 
-            // 5. Clear purchased cart records ONLY for this user & restaurant
+            // Clear only the purchased restaurant's cart items for this customer
             val deleteSql = """
                 DELETE FROM cart_items
                 WHERE user_id = ? AND menu_item_id IN (
@@ -224,8 +230,8 @@ class CheckoutRepository(context: Context) {
     fun getOrderById(orderId: Long): Order? {
         val db = dbHelper.readableDatabase
         val query = """
-            SELECT o.id, o.user_id, o.restaurant_id, r.name, o.total_amount,
-                   o.delivery_address, o.contact_number, o.status, o.created_at
+            SELECT o.id, o.user_id, o.restaurant_id, r.name, o.total_price,
+                   o.delivery_address, o.contact_number, o.status, o.order_date
             FROM orders o
             LEFT JOIN restaurants r ON o.restaurant_id = r.id
             WHERE o.id = ?
@@ -237,7 +243,7 @@ class CheckoutRepository(context: Context) {
                     id = cursor.getLong(0),
                     userId = cursor.getInt(1),
                     restaurantId = cursor.getInt(2),
-                    restaurantName = cursor.getString(3) ?: "Restaurant",
+                    restaurantName = cursor.getString(3) ?: "",
                     totalAmountCentavos = cursor.getInt(4),
                     deliveryAddress = cursor.getString(5) ?: "",
                     contactNumber = cursor.getString(6) ?: "",
@@ -247,72 +253,5 @@ class CheckoutRepository(context: Context) {
             }
         }
         return null
-    }
-
-    private fun findFirstCartRestaurantId(db: SQLiteDatabase, userId: Int): Int? {
-        val sql = """
-            SELECT m.restaurant_id
-            FROM cart_items c
-            INNER JOIN menu_items m ON c.menu_item_id = m.id
-            WHERE c.user_id = ?
-            LIMIT 1
-        """.trimIndent()
-        db.rawQuery(sql, arrayOf(userId.toString())).use { cursor ->
-            if (cursor.moveToFirst()) return cursor.getInt(0)
-        }
-        return null
-    }
-
-    /**
-     * Temporary placeholder seeder used ONLY when Members 2 & 3 haven't populated data yet.
-     * Safe to keep: once real restaurants & cart_items exist, this is never triggered.
-     */
-    private fun seedTemporaryPlaceholderData(db: SQLiteDatabase, userId: Int): Int {
-        var restaurantId = -1
-        db.rawQuery("SELECT id FROM restaurants LIMIT 1", null).use { c ->
-            if (c.moveToFirst()) restaurantId = c.getInt(0)
-        }
-
-        if (restaurantId == -1) {
-            val restValues = ContentValues().apply {
-                put("name", "McDo - Fastfood")
-                put("description", "Fast food burgers, fries, and chicken meals")
-                put("delivery_time", "20-30 mins")
-            }
-            restaurantId = db.insert("restaurants", null, restValues).toInt()
-        }
-
-        val item1Id = db.insert("menu_items", null, ContentValues().apply {
-            put("restaurant_id", restaurantId)
-            put("name", "Big Mac")
-            put("description", "A Classic: Two all-100% beef patties, lettuce, cheese, pickles, onions on a sesame seed bun.")
-            put("price", 19900) // ₱199.00 each -> Qty 2 = ₱398.00
-            put("available", 1)
-        }).toInt()
-
-        val item2Id = db.insert("menu_items", null, ContentValues().apply {
-            put("restaurant_id", restaurantId)
-            put("name", "Chicken Sandwich")
-            put("description", "Made of a juicy chicken patty topped with creamy mayo, sandwiched in a soft tasty bun.")
-            put("price", 7500) // ₱75.00
-            put("available", 1)
-        }).toInt()
-
-        if (item1Id != -1) {
-            db.insert("cart_items", null, ContentValues().apply {
-                put("user_id", userId)
-                put("menu_item_id", item1Id)
-                put("quantity", 2)
-            })
-        }
-        if (item2Id != -1) {
-            db.insert("cart_items", null, ContentValues().apply {
-                put("user_id", userId)
-                put("menu_item_id", item2Id)
-                put("quantity", 1)
-            })
-        }
-
-        return restaurantId
     }
 }

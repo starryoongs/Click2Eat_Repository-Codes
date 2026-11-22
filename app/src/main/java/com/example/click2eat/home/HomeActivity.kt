@@ -1,15 +1,16 @@
 package com.example.click2eat.home
 
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.View
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
-import com.example.click2eat.database.UserRepository
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.click2eat.CartActivity
 import com.example.click2eat.R
 import com.example.click2eat.auth.LoginActivity
 import com.example.click2eat.auth.ProfileActivity
@@ -17,9 +18,9 @@ import com.example.click2eat.auth.SessionManager
 import com.example.click2eat.database.DatabaseSeeder
 import com.example.click2eat.database.MenuRepository
 import com.example.click2eat.database.RestaurantRepository
-import java.util.concurrent.Executors
-import android.net.Uri
+import com.example.click2eat.database.UserRepository
 import java.io.File
+import java.util.concurrent.Executors
 
 class HomeActivity : AppCompatActivity() {
 
@@ -90,6 +91,17 @@ class HomeActivity : AppCompatActivity() {
                 Intent(
                     this,
                     ProfileActivity::class.java
+                )
+            )
+        }
+
+        findViewById<View>(
+            R.id.btnCart
+        ).setOnClickListener {
+            startActivity(
+                Intent(
+                    this,
+                    CartActivity::class.java
                 )
             )
         }

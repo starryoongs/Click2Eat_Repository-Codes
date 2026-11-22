@@ -1,4 +1,3 @@
-
 package com.example.click2eat.adapters
 
 import android.view.LayoutInflater
@@ -6,15 +5,17 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.LinearLayout
+import android.widget.PopupMenu
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.click2eat.R
 import com.example.click2eat.models.CartItem
-import com.example.click2eat.utils.PriceUtils
 import com.example.click2eat.utils.ImageUtils
+import com.example.click2eat.utils.PriceUtils
 
 class RestaurantCartAdapter(
-    private val onViewCart: (Int) -> Unit
+    private val onViewCart: (Int) -> Unit,
+    private val onClearRestaurantCart: (Int, String) -> Unit = { _, _ -> }
 ) : RecyclerView.Adapter<RestaurantCartAdapter.RestaurantViewHolder>() {
 
     private var restaurantGroups: List<List<CartItem>> = emptyList()
@@ -30,6 +31,9 @@ class RestaurantCartAdapter(
 
         val restaurantImage: ImageView =
             view.findViewById(R.id.imgRestaurant)
+
+        val optionsButton: View? =
+            view.findViewById(R.id.btnRestaurantOptions)
 
         val subtotal: TextView =
             view.findViewById(R.id.txtRestaurantSubtotal)
@@ -60,11 +64,7 @@ class RestaurantCartAdapter(
         val firstItem = items.firstOrNull() ?: return
 
         holder.restaurantName.text = firstItem.restaurantName
-
-        // Delivery time will be connected to restaurant data later
         holder.deliveryTime.text = ""
-
-        // Select the restaurant logo
 
         holder.restaurantImage.setImageResource(
             ImageUtils.getImageResource(
@@ -73,23 +73,14 @@ class RestaurantCartAdapter(
             )
         )
 
-        // Calculate the restaurant subtotal
         val restaurantTotal = items.sumOf { it.subtotal }
+        holder.subtotal.text = PriceUtils.formatPrice(restaurantTotal)
 
-        holder.subtotal.text =
-            PriceUtils.formatPrice(restaurantTotal)
-
-        // Remove old preview images
         holder.foodPreviews.removeAllViews()
 
-        // Display up to three food previews
         items.take(3).forEach { item ->
-
             val imageView = ImageView(holder.itemView.context)
-
-            val density =
-                holder.itemView.resources.displayMetrics.density
-
+            val density = holder.itemView.resources.displayMetrics.density
             val size = (65 * density).toInt()
             val margin = (8 * density).toInt()
 
@@ -98,32 +89,40 @@ class RestaurantCartAdapter(
 
             imageView.layoutParams = params
             imageView.scaleType = ImageView.ScaleType.FIT_CENTER
-
             imageView.setImageResource(
                 ImageUtils.getImageResource(
                     holder.itemView.context,
                     item.image
                 )
             )
-
             imageView.contentDescription = item.foodName
 
             holder.foodPreviews.addView(imageView)
         }
 
+        // Three-dots menu ("Clear Restaurant Cart")
+        holder.optionsButton?.setOnClickListener { anchorView ->
+            val currentPosition = holder.bindingAdapterPosition
+            if (currentPosition != RecyclerView.NO_POSITION) {
+                val selectedItems = restaurantGroups[currentPosition]
+                val targetItem = selectedItems.firstOrNull() ?: return@setOnClickListener
+
+                val popup = PopupMenu(anchorView.context, anchorView)
+                popup.menu.add("Clear Restaurant Cart")
+                    .setOnMenuItemClickListener {
+                        onClearRestaurantCart(targetItem.restaurantId, targetItem.restaurantName)
+                        true
+                    }
+                popup.show()
+            }
+        }
+
         // Open the selected restaurant's cart
         holder.viewCartButton.setOnClickListener {
-
             val currentPosition = holder.bindingAdapterPosition
-
             if (currentPosition != RecyclerView.NO_POSITION) {
-
-                val selectedItems =
-                    restaurantGroups[currentPosition]
-
-                val restaurantId =
-                    selectedItems.firstOrNull()?.restaurantId
-
+                val selectedItems = restaurantGroups[currentPosition]
+                val restaurantId = selectedItems.firstOrNull()?.restaurantId
                 if (restaurantId != null) {
                     onViewCart(restaurantId)
                 }
@@ -136,7 +135,6 @@ class RestaurantCartAdapter(
     }
 
     fun updateItems(cartItems: List<CartItem>) {
-
         restaurantGroups = cartItems
             .groupBy { it.restaurantId }
             .values

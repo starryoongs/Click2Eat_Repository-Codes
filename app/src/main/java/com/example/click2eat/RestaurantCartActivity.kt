@@ -1,7 +1,10 @@
-
 package com.example.click2eat
 
+import android.content.Intent
 import android.os.Bundle
+import android.view.View
+import android.widget.ImageView
+import android.widget.PopupMenu
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
@@ -9,14 +12,16 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.click2eat.adapters.CartAdapter
+import com.example.click2eat.auth.ProfileActivity
 import com.example.click2eat.auth.SessionManager
+import com.example.click2eat.checkout.CheckoutActivity
 import com.example.click2eat.database.CartRepository
-import com.example.click2eat.models.CartItem
-import com.example.click2eat.utils.PriceUtils
-import android.widget.ImageView
 import com.example.click2eat.database.DatabaseHelper
-import android.widget.PopupMenu
+import com.example.click2eat.home.HomeActivity
+import com.example.click2eat.home.RestaurantsActivity
+import com.example.click2eat.models.CartItem
 import com.example.click2eat.utils.ImageUtils
+import com.example.click2eat.utils.PriceUtils
 
 class RestaurantCartActivity : AppCompatActivity() {
 
@@ -34,7 +39,6 @@ class RestaurantCartActivity : AppCompatActivity() {
         setContentView(R.layout.activity_restaurant_cart)
 
         val sessionManager = SessionManager(this)
-
         val sessionUserId = sessionManager.getUserId()
 
         if (!sessionManager.isLoggedIn() ||
@@ -51,7 +55,6 @@ class RestaurantCartActivity : AppCompatActivity() {
         }
 
         userId = sessionUserId.toInt()
-
         restaurantId = intent.getIntExtra("restaurant_id", -1)
 
         if (restaurantId <= 0) {
@@ -92,6 +95,8 @@ class RestaurantCartActivity : AppCompatActivity() {
                 finish()
             }
 
+        setupBottomNavigation()
+
         findViewById<TextView>(R.id.btnRestaurantOptions)
             .setOnClickListener { view ->
 
@@ -109,15 +114,50 @@ class RestaurantCartActivity : AppCompatActivity() {
 
         findViewById<TextView>(R.id.btnProceedCheckout)
             .setOnClickListener {
-                Toast.makeText(
-                    this,
-                    "Checkout screen will be connected later",
-                    Toast.LENGTH_SHORT
-                ).show()
+                val currentItems = cartRepository.getRestaurantCartItems(userId, restaurantId)
+                if (currentItems.isEmpty()) {
+                    Toast.makeText(
+                        this,
+                        "Your cart is empty",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    return@setOnClickListener
+                }
+
+                val checkoutIntent = Intent(this, CheckoutActivity::class.java).apply {
+                    putExtra(CheckoutActivity.EXTRA_RESTAURANT_ID, restaurantId)
+                }
+                startActivity(checkoutIntent)
             }
 
         loadRestaurantInfo()
         loadCartItems()
+    }
+
+    private fun setupBottomNavigation() {
+        findViewById<View>(R.id.navHome)?.setOnClickListener {
+            val intent = Intent(this, HomeActivity::class.java).apply {
+                flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
+            }
+            startActivity(intent)
+            finish()
+        }
+
+        findViewById<View>(R.id.navCart)?.setOnClickListener {
+            finish()
+        }
+
+        findViewById<View>(R.id.navRestaurants)?.setOnClickListener {
+            val intent = Intent(this, RestaurantsActivity::class.java).apply {
+                flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
+            }
+            startActivity(intent)
+            finish()
+        }
+
+        findViewById<View>(R.id.btnProfile)?.setOnClickListener {
+            startActivity(Intent(this, ProfileActivity::class.java))
+        }
     }
 
     private fun loadCartItems() {
@@ -208,10 +248,10 @@ class RestaurantCartActivity : AppCompatActivity() {
 
         val cursor = db.rawQuery(
             """
-        SELECT name, image, delivery_time
-        FROM restaurants
-        WHERE id = ?
-        """.trimIndent(),
+            SELECT name, image, delivery_time
+            FROM restaurants
+            WHERE id = ?
+            """.trimIndent(),
             arrayOf(restaurantId.toString())
         )
 
@@ -227,7 +267,6 @@ class RestaurantCartActivity : AppCompatActivity() {
 
                 findViewById<TextView>(R.id.txtDeliveryTime).text =
                     deliveryTime ?: ""
-
 
                 findViewById<ImageView>(R.id.imgRestaurant)
                     .setImageResource(
@@ -274,5 +313,4 @@ class RestaurantCartActivity : AppCompatActivity() {
             .setNegativeButton("Cancel", null)
             .show()
     }
-
 }
