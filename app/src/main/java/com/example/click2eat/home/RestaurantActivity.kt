@@ -20,7 +20,6 @@ import com.example.click2eat.database.MenuRepository
 import com.example.click2eat.database.RestaurantRepository
 import java.util.concurrent.Executors
 import java.io.File
-import com.example.click2eat.auth.ProfileActivity
 import com.example.click2eat.database.UserRepository
 
 class RestaurantActivity : AppCompatActivity() {
