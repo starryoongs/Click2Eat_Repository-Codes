@@ -1,63 +1,72 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FDE8F1"
+    android:background="#FDE1EB"
     android:orientation="vertical">
 
-    <!-- Top Header -->
-    <RelativeLayout
+    <!-- Header (matches HomeActivity) -->
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="64dp"
-        android:paddingHorizontal="20dp">
+        android:layout_height="71dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="25dp"
+        android:layout_marginEnd="18dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
 
         <ImageView
-            android:id="@+id/ivLogo"
-            android:layout_width="130dp"
-            android:layout_height="40dp"
-            android:layout_centerInParent="true"
-            android:contentDescription="Click2Eat Logo"
-            android:src="@drawable/click2eat_logo" />
+            android:layout_width="28dp"
+            android:layout_height="30dp"
+            android:layout_marginLeft="9dp"
+            android:contentDescription="Menu"
+            android:src="@drawable/three_line_icon" />
+
+        <ImageView
+            android:layout_width="0dp"
+            android:layout_height="58dp"
+            android:layout_weight="1"
+            android:contentDescription="Click2Eat logo"
+            android:scaleType="fitCenter"
+            android:src="@drawable/click2eat_logo_no_bg" />
 
         <ImageView
             android:id="@+id/ivProfile"
-            android:layout_width="36dp"
-            android:layout_height="36dp"
-            android:layout_alignParentEnd="true"
-            android:layout_centerVertical="true"
-            android:contentDescription="Profile"
-            android:src="@drawable/default_profile" />
-    </RelativeLayout>
+            android:layout_width="47dp"
+            android:layout_height="47dp"
+            android:layout_marginEnd="13dp"
+            android:background="@drawable/bg_profile_circle"
+            android:clipToOutline="true"
+            android:contentDescription="Open profile"
+            android:scaleType="centerCrop"
+            android:src="@drawable/default_profile2" />
+    </LinearLayout>
 
     <!-- White Confirmation Card -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginHorizontal="20dp"
+        android:layout_marginHorizontal="24dp"
         android:layout_marginTop="12dp"
-        android:layout_marginBottom="24dp"
+        android:layout_marginBottom="20dp"
         android:layout_weight="1"
         android:background="@drawable/bg_profile_card"
         android:gravity="center_horizontal"
         android:orientation="vertical"
         android:padding="24dp">
 
-        <!-- Pink Checkmark Circle -->
-        <TextView
-            android:layout_width="76dp"
-            android:layout_height="76dp"
+        <ImageView
+            android:layout_width="64dp"
+            android:layout_height="64dp"
             android:layout_marginTop="12dp"
-            android:background="@drawable/bg_profile_circle"
-            android:gravity="center"
-            android:text="✓"
-            android:textColor="#F48FB1"
-            android:textSize="38sp"
-            android:textStyle="bold" />
+            android:contentDescription="Order placed"
+            android:src="@drawable/ic_order_check" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="12dp"
             android:text="Order Placed!"
             android:textColor="#111111"
             android:textSize="22sp"
@@ -75,14 +84,14 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:layout_marginVertical="20dp"
+            android:layout_marginVertical="16dp"
             android:background="#F5D0E0" />
 
         <!-- Order ID Row -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="12dp"
+            android:layout_marginBottom="8dp"
             android:orientation="horizontal">
 
             <TextView
@@ -107,7 +116,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="12dp"
+            android:layout_marginBottom="8dp"
             android:orientation="horizontal">
 
             <TextView
@@ -132,7 +141,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="12dp"
+            android:layout_marginBottom="8dp"
             android:orientation="horizontal">
 
             <TextView
@@ -172,7 +181,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Pending"
-                android:textColor="#E67E22"
+                android:textColor="#FF8C42"
                 android:textSize="14sp"
                 android:textStyle="bold" />
         </LinearLayout>
@@ -186,11 +195,66 @@
             android:id="@+id/btnViewOrderDetails"
             android:layout_width="match_parent"
             android:layout_height="48dp"
-            android:background="@drawable/bg_pink_button"
+            android:layout_marginHorizontal="6dp"
             android:text="View Order Details"
             android:textAllCaps="false"
             android:textColor="#FFFFFF"
             android:textSize="15sp"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            app:backgroundTint="@color/click_pink"
+            app:cornerRadius="10dp" />
+    </LinearLayout>
+
+    <!-- Bottom Navigation (matches HomeActivity) -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:background="@color/click_white"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <ImageButton
+            android:id="@+id/btnHome"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@android:color/transparent"
+            android:contentDescription="Home"
+            android:padding="20dp"
+            android:scaleType="centerInside"
+            android:src="@drawable/dashboard_icon" />
+
+        <ImageButton
+            android:id="@+id/btnCart"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@android:color/transparent"
+            android:contentDescription="Cart"
+            android:padding="20dp"
+            android:scaleType="centerInside"
+            android:src="@drawable/cart_icon" />
+
+        <ImageButton
+            android:id="@+id/btnRestaurants"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@android:color/transparent"
+            android:contentDescription="Restaurants"
+            android:padding="20dp"
+            android:scaleType="centerInside"
+            android:src="@drawable/restaurants_icon" />
+
+        <ImageButton
+            android:id="@+id/btnOrders"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@android:color/transparent"
+            android:contentDescription="Order history"
+            android:padding="21dp"
+            android:scaleType="centerInside"
+            android:src="@drawable/history_icon" />
     </LinearLayout>
 </LinearLayout>

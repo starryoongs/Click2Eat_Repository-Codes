@@ -3,8 +3,8 @@ package com.example.click2eat.home
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.widget.ImageButton
 import android.widget.ImageView
+import android.widget.ImageButton
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -18,9 +18,10 @@ import com.example.click2eat.database.CartRepository
 import com.example.click2eat.database.DatabaseSeeder
 import com.example.click2eat.database.MenuRepository
 import com.example.click2eat.database.RestaurantRepository
-import com.example.click2eat.database.UserRepository
-import java.io.File
 import java.util.concurrent.Executors
+import java.io.File
+import com.example.click2eat.auth.ProfileActivity
+import com.example.click2eat.database.UserRepository
 
 class RestaurantActivity : AppCompatActivity() {
 
@@ -34,6 +35,13 @@ class RestaurantActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         setContentView(R.layout.activity_restaurant)
+
+        findViewById<ImageView>(R.id.ivProfile).setOnClickListener {
+            startActivity(
+                Intent(this, ProfileActivity::class.java)
+            )
+        }
+
 
         findViewById<ImageButton>(R.id.btnCart)?.setOnClickListener {
             startActivity(

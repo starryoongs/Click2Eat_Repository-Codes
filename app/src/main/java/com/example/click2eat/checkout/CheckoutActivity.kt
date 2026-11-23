@@ -1,20 +1,27 @@
 package com.example.click2eat.checkout
 
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
-import android.widget.Button
+import android.view.View
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.example.click2eat.CartActivity
 import com.example.click2eat.R
 import com.example.click2eat.auth.LoginActivity
 import com.example.click2eat.auth.ProfileActivity
 import com.example.click2eat.auth.SessionManager
 import com.example.click2eat.database.CheckoutRepository
+import com.example.click2eat.database.UserRepository
+import com.example.click2eat.home.HomeActivity
+import com.example.click2eat.home.RestaurantsActivity
+import com.example.click2eat.orders.OrderHistoryActivity
+import java.io.File
 import java.util.Locale
 
 class CheckoutActivity : AppCompatActivity() {
@@ -26,6 +33,7 @@ class CheckoutActivity : AppCompatActivity() {
     private lateinit var checkoutRepository: CheckoutRepository
     private lateinit var sessionManager: SessionManager
 
+    private lateinit var ivProfile: ImageView
     private lateinit var ivRestaurantLogo: ImageView
     private lateinit var tvRestaurantName: TextView
     private lateinit var tvDeliveryTime: TextView
@@ -33,7 +41,7 @@ class CheckoutActivity : AppCompatActivity() {
     private lateinit var etDeliveryAddress: EditText
     private lateinit var etContactNumber: EditText
     private lateinit var tvTotalAmount: TextView
-    private lateinit var btnPlaceOrder: Button
+    private lateinit var btnPlaceOrder: TextView
 
     private var currentUserId: Int = -1
     private var activeRestaurantId: Int = -1
@@ -54,7 +62,6 @@ class CheckoutActivity : AppCompatActivity() {
             return
         }
 
-        // Accepts either "RESTAURANT_ID" or "restaurant_id" from Member 3's RestaurantCartActivity
         activeRestaurantId = intent.getIntExtra(EXTRA_RESTAURANT_ID, -1).let { id ->
             if (id > 0) id else intent.getIntExtra("restaurant_id", -1)
         }
@@ -66,10 +73,19 @@ class CheckoutActivity : AppCompatActivity() {
         }
 
         bindViews()
+        loadUserProfilePicture()
         loadCheckoutData()
     }
 
+    override fun onResume() {
+        super.onResume()
+        if (::sessionManager.isInitialized && currentUserId > 0) {
+            loadUserProfilePicture()
+        }
+    }
+
     private fun bindViews() {
+        ivProfile = findViewById(R.id.ivProfile)
         ivRestaurantLogo = findViewById(R.id.ivRestaurantLogo)
         tvRestaurantName = findViewById(R.id.tvRestaurantName)
         tvDeliveryTime = findViewById(R.id.tvDeliveryTime)
@@ -83,12 +99,56 @@ class CheckoutActivity : AppCompatActivity() {
             finish()
         }
 
-        findViewById<ImageView>(R.id.ivProfile).setOnClickListener {
+        ivProfile.setOnClickListener {
             startActivity(Intent(this, ProfileActivity::class.java))
+        }
+
+        findViewById<View>(R.id.btnHome)?.setOnClickListener {
+            startActivity(
+                Intent(this, HomeActivity::class.java).apply {
+                    flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
+                }
+            )
+            finish()
+        }
+
+        findViewById<View>(R.id.btnCart)?.setOnClickListener {
+            startActivity(
+                Intent(this, CartActivity::class.java).apply {
+                    flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
+                }
+            )
+            finish()
+        }
+
+        findViewById<View>(R.id.btnRestaurants)?.setOnClickListener {
+            startActivity(
+                Intent(this, RestaurantsActivity::class.java).apply {
+                    flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
+                }
+            )
+            finish()
+        }
+
+        findViewById<View>(R.id.btnOrders)?.setOnClickListener {
+            startActivity(Intent(this, OrderHistoryActivity::class.java))
         }
 
         btnPlaceOrder.setOnClickListener {
             handlePlaceOrder()
+        }
+    }
+
+    private fun loadUserProfilePicture() {
+        val user = UserRepository(this).getUserById(currentUserId.toLong())
+        val profileFile = user?.profilePicture
+            ?.takeIf { it.isNotBlank() }
+            ?.let { File(filesDir, it) }
+
+        if (profileFile != null && profileFile.exists()) {
+            ivProfile.setImageURI(Uri.fromFile(profileFile))
+        } else {
+            ivProfile.setImageResource(R.drawable.default_profile2)
         }
     }
 
@@ -104,7 +164,7 @@ class CheckoutActivity : AppCompatActivity() {
         tvRestaurantName.text = summary.restaurantName
         tvDeliveryTime.text = summary.deliveryTime
         tvTotalAmount.text = formatCentavosToPeso(summary.totalCentavos)
-        bindDrawableByName(ivRestaurantLogo, summary.restaurantImage, R.drawable.click2eat_logo)
+        bindDrawableByName(ivRestaurantLogo, summary.restaurantImage, R.drawable.click2eat_logo_no_bg)
 
         llOrderItemsContainer.removeAllViews()
         val inflater = LayoutInflater.from(this)
@@ -112,7 +172,7 @@ class CheckoutActivity : AppCompatActivity() {
         for (item in summary.items) {
             val rowView = inflater.inflate(R.layout.item_checkout, llOrderItemsContainer, false)
             val ivFood = rowView.findViewById<ImageView>(R.id.ivFoodImage)
-            bindDrawableByName(ivFood, item.imageResName, R.drawable.click2eat_logo)
+            bindDrawableByName(ivFood, item.imageResName, R.drawable.click2eat_logo_no_bg)
 
             rowView.findViewById<TextView>(R.id.tvFoodName).text = item.foodName
             rowView.findViewById<TextView>(R.id.tvFoodDescription).text = item.foodDescription
