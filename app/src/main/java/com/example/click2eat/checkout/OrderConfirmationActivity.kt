@@ -1,15 +1,24 @@
 package com.example.click2eat.checkout
 
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
+import android.view.View
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.example.click2eat.CartActivity
 import com.example.click2eat.R
 import com.example.click2eat.auth.ProfileActivity
+import com.example.click2eat.auth.SessionManager
 import com.example.click2eat.database.CheckoutRepository
+import com.example.click2eat.database.UserRepository
+import com.example.click2eat.home.HomeActivity
+import com.example.click2eat.home.RestaurantsActivity
+import com.example.click2eat.orders.OrderHistoryActivity
+import java.io.File
 import java.util.Locale
 
 class OrderConfirmationActivity : AppCompatActivity() {
@@ -42,6 +51,11 @@ class OrderConfirmationActivity : AppCompatActivity() {
             startActivity(Intent(this, ProfileActivity::class.java))
         }
 
+        findViewById<View>(R.id.btnHome).setOnClickListener { goTo(HomeActivity::class.java) }
+        findViewById<View>(R.id.btnCart).setOnClickListener { goTo(CartActivity::class.java) }
+        findViewById<View>(R.id.btnRestaurants).setOnClickListener { goTo(RestaurantsActivity::class.java) }
+        findViewById<View>(R.id.btnOrders).setOnClickListener { goTo(OrderHistoryActivity::class.java) }
+
         findViewById<TextView>(R.id.tvConfirmOrderId).text =
             if (orderId > 0) String.format(Locale.US, "#%06d", orderId) else "#000001"
         findViewById<TextView>(R.id.tvConfirmRestaurant).text = restaurantName
@@ -66,5 +80,34 @@ class OrderConfirmationActivity : AppCompatActivity() {
                 ).show()
             }
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        loadUserProfilePicture()
+    }
+
+    private fun loadUserProfilePicture() {
+        val profileImage = findViewById<ImageView>(R.id.ivProfile) ?: return
+        val userId = SessionManager(this).getUserId()
+        val user = if (userId > 0L) UserRepository(this).getUserById(userId) else null
+        val profileFile = user?.profilePicture
+            ?.takeIf { it.isNotBlank() }
+            ?.let { File(filesDir, it) }
+
+        if (profileFile != null && profileFile.exists()) {
+            profileImage.setImageURI(Uri.fromFile(profileFile))
+        } else {
+            profileImage.setImageResource(R.drawable.default_profile2)
+        }
+    }
+
+    private fun goTo(destination: Class<*>) {
+        startActivity(
+            Intent(this, destination).apply {
+                flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
+            }
+        )
+        finish()
     }
 }

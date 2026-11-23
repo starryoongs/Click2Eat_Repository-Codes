@@ -19,6 +19,7 @@ import com.example.click2eat.database.DatabaseSeeder
 import com.example.click2eat.database.MenuRepository
 import com.example.click2eat.database.RestaurantRepository
 import com.example.click2eat.database.UserRepository
+import com.example.click2eat.orders.OrderHistoryActivity
 import java.io.File
 import java.util.concurrent.Executors
 
@@ -92,6 +93,30 @@ class HomeActivity : AppCompatActivity() {
                     this,
                     ProfileActivity::class.java
                 )
+            )
+        }
+
+        findViewById<View>(R.id.btnCart).setOnClickListener {
+            startActivity(
+                Intent(this, CartActivity::class.java).apply {
+                    flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
+                }
+            )
+        }
+
+        findViewById<View>(R.id.btnRestaurants).setOnClickListener {
+            startActivity(
+                Intent(this, RestaurantsActivity::class.java).apply {
+                    flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
+                }
+            )
+        }
+
+        findViewById<View>(R.id.btnOrders).setOnClickListener {
+            startActivity(
+                Intent(this, OrderHistoryActivity::class.java).apply {
+                    flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
+                }
             )
         }
 
