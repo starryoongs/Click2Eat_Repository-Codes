@@ -10,11 +10,11 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.click2eat.R
+import com.example.click2eat.CartActivity
 import com.example.click2eat.database.DatabaseSeeder
 import com.example.click2eat.database.MenuRepository
 import com.example.click2eat.database.RestaurantRepository
 import android.widget.ImageButton
-import com.example.click2eat.home.HomeActivity
 import java.util.concurrent.Executors
 import android.net.Uri
 import java.io.File
@@ -27,6 +27,7 @@ class RestaurantsActivity : AppCompatActivity() {
     companion object {
         const val EXTRA_CATEGORY = "category"
     }
+
     private val executor = Executors.newSingleThreadExecutor()
 
     private lateinit var repository: RestaurantRepository
@@ -52,6 +53,10 @@ class RestaurantsActivity : AppCompatActivity() {
                 }
             )
             finish()
+        }
+
+        findViewById<ImageButton>(R.id.btnCart).setOnClickListener {
+            startActivity(Intent(this, CartActivity::class.java))
         }
 
         findViewById<ImageButton>(R.id.btnRestaurants).setOnClickListener {
