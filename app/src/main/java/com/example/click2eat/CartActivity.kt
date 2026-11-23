@@ -67,11 +67,16 @@ class CartActivity : AppCompatActivity() {
                     this,
                     RestaurantCartActivity::class.java
                 )
+
                 intent.putExtra("restaurant_id", restaurantId)
                 startActivity(intent)
             },
+
             onClearRestaurantCart = { restaurantId, restaurantName ->
-                confirmClearRestaurantCart(restaurantId, restaurantName)
+                confirmClearRestaurantCart(
+                    restaurantId,
+                    restaurantName
+                )
             }
         )
 
@@ -83,9 +88,66 @@ class CartActivity : AppCompatActivity() {
         loadCartItems()
     }
 
+    // Bottom navigation
+    private fun setupNavigation() {
+
+        // Home
+        findViewById<View>(R.id.btnHome)?.setOnClickListener {
+            val intent = Intent(
+                this,
+                HomeActivity::class.java
+            ).apply {
+                flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or
+                        Intent.FLAG_ACTIVITY_SINGLE_TOP
+            }
+
+            startActivity(intent)
+            finish()
+        }
+
+        // Restaurants
+        findViewById<View>(R.id.btnRestaurants)?.setOnClickListener {
+            val intent = Intent(
+                this,
+                RestaurantsActivity::class.java
+            ).apply {
+                flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or
+                        Intent.FLAG_ACTIVITY_SINGLE_TOP
+            }
+
+            startActivity(intent)
+            finish()
+        }
+
+        // Order History
+        findViewById<View>(R.id.btnOrders)?.setOnClickListener {
+            startActivity(
+                Intent(
+                    this,
+                    OrderHistoryActivity::class.java
+                )
+            )
+        }
+
+        // Profile
+        findViewById<View>(R.id.btnProfile)?.setOnClickListener {
+            startActivity(
+                Intent(
+                    this,
+                    ProfileActivity::class.java
+                )
+            )
+        }
+    }
+
+    // Load profile picture
     private fun loadUserProfilePicture() {
-        val profileImage = findViewById<ImageView>(R.id.btnProfile) ?: return
-        val user = UserRepository(this).getUserById(userId.toLong())
+        val profileImage =
+            findViewById<ImageView>(R.id.btnProfile) ?: return
+
+        val user = UserRepository(this)
+            .getUserById(userId.toLong())
+
         val profileFile = user?.profilePicture
             ?.takeIf { it.isNotBlank() }
             ?.let { File(filesDir, it) }
@@ -93,22 +155,35 @@ class CartActivity : AppCompatActivity() {
         if (profileFile != null && profileFile.exists()) {
             profileImage.setImageURI(Uri.fromFile(profileFile))
         } else {
-            profileImage.setImageResource(R.drawable.default_profile2)
+            profileImage.setImageResource(
+                R.drawable.default_profile2
+            )
         }
     }
 
-    private fun confirmClearRestaurantCart(restaurantId: Int, restaurantName: String) {
+    // Clear restaurant cart
+    private fun confirmClearRestaurantCart(
+        restaurantId: Int,
+        restaurantName: String
+    ) {
         AlertDialog.Builder(this)
             .setTitle("Clear Restaurant Cart")
-            .setMessage("Are you sure you want to remove all items from $restaurantName?")
+            .setMessage(
+                "Are you sure you want to remove all items from $restaurantName?"
+            )
             .setPositiveButton("Clear Cart") { _, _ ->
-                val cleared = cartRepository.clearRestaurantCart(userId, restaurantId)
+                val cleared = cartRepository.clearRestaurantCart(
+                    userId,
+                    restaurantId
+                )
+
                 if (cleared) {
                     Toast.makeText(
                         this,
                         "Restaurant cart cleared successfully",
                         Toast.LENGTH_SHORT
                     ).show()
+
                     loadCartItems()
                 } else {
                     Toast.makeText(
@@ -122,32 +197,7 @@ class CartActivity : AppCompatActivity() {
             .show()
     }
 
-    private fun setupNavigation() {
-        findViewById<View>(R.id.btnHome)?.setOnClickListener {
-            val intent = Intent(this, HomeActivity::class.java).apply {
-                flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
-            }
-            startActivity(intent)
-            finish()
-        }
-
-        findViewById<View>(R.id.btnRestaurants)?.setOnClickListener {
-            val intent = Intent(this, RestaurantsActivity::class.java).apply {
-                flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
-            }
-            startActivity(intent)
-            finish()
-        }
-
-        findViewById<View>(R.id.btnOrders)?.setOnClickListener {
-            startActivity(Intent(this, OrderHistoryActivity::class.java))
-        }
-
-        findViewById<View>(R.id.btnProfile)?.setOnClickListener {
-            startActivity(Intent(this, ProfileActivity::class.java))
-        }
-    }
-
+    // Load cart items
     private fun loadCartItems() {
         val items = cartRepository.getCartItems(userId)
 

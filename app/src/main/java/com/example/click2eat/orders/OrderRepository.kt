@@ -100,18 +100,28 @@ class OrderRepository(context: Context) {
         val result = mutableListOf<OrderItem>()
         val db = helper.readableDatabase
         db.rawQuery("""
-            SELECT oi.id, oi.order_id, oi.menu_item_id, COALESCE(m.name, 'Item'),
-                   COALESCE(m.description, ''), oi.quantity, oi.price
+       SELECT oi.id, oi.order_id, oi.menu_item_id,
+           COALESCE(m.name, 'Item'),
+           COALESCE(m.description, ''),
+           oi.quantity,
+           oi.price,
+           COALESCE(m.image, '')
             FROM order_items oi
             INNER JOIN orders o ON o.id = oi.order_id
             LEFT JOIN menu_items m ON m.id = oi.menu_item_id
             WHERE o.user_id = ? AND o.id = ? ORDER BY oi.id
         """.trimIndent(), arrayOf(userId.toString(), orderId.toString())).use { c ->
-            while (c.moveToNext()) result += OrderItem(
-                id = c.getLong(0), orderId = c.getLong(1), menuItemId = c.getInt(2),
-                foodName = c.getString(3) ?: "Item", foodDescription = c.getString(4) ?: "",
-                quantity = c.getInt(5), priceCentavos = c.getInt(6)
-            )
+            while (c.moveToNext()) result +=
+                OrderItem(
+                    id = c.getLong(0),
+                    orderId = c.getLong(1),
+                    menuItemId = c.getInt(2),
+                    foodName = c.getString(3) ?: "Item",
+                    foodDescription = c.getString(4) ?: "",
+                    quantity = c.getInt(5),
+                    priceCentavos = c.getInt(6),
+                    imageResName = c.getString(7) ?: ""
+                )
         }
         return result
     }
