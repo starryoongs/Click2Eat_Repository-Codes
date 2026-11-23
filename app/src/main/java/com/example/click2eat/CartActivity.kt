@@ -1,3 +1,4 @@
+
 package com.example.click2eat
 
 import android.content.Intent
@@ -15,6 +16,7 @@ import com.example.click2eat.auth.SessionManager
 import com.example.click2eat.database.CartRepository
 import com.example.click2eat.home.HomeActivity
 import com.example.click2eat.home.RestaurantsActivity
+import com.example.click2eat.orders.OrderHistoryActivity
 
 class CartActivity : AppCompatActivity() {
 
@@ -41,6 +43,7 @@ class CartActivity : AppCompatActivity() {
                 "Please log in first",
                 Toast.LENGTH_SHORT
             ).show()
+
             finish()
             return
         }
@@ -61,11 +64,16 @@ class CartActivity : AppCompatActivity() {
                     this,
                     RestaurantCartActivity::class.java
                 )
+
                 intent.putExtra("restaurant_id", restaurantId)
                 startActivity(intent)
             },
+
             onClearRestaurantCart = { restaurantId, restaurantName ->
-                confirmClearRestaurantCart(restaurantId, restaurantName)
+                confirmClearRestaurantCart(
+                    restaurantId,
+                    restaurantName
+                )
             }
         )
 
@@ -77,19 +85,83 @@ class CartActivity : AppCompatActivity() {
         loadCartItems()
     }
 
-    private fun confirmClearRestaurantCart(restaurantId: Int, restaurantName: String) {
+    private fun setupNavigation() {
+
+        // Home
+        findViewById<View>(R.id.navHome)?.setOnClickListener {
+            val intent = Intent(
+                this,
+                HomeActivity::class.java
+            ).apply {
+                flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or
+                        Intent.FLAG_ACTIVITY_SINGLE_TOP
+            }
+
+            startActivity(intent)
+            finish()
+        }
+
+        // Restaurants
+        findViewById<View>(R.id.navRestaurants)?.setOnClickListener {
+            val intent = Intent(
+                this,
+                RestaurantsActivity::class.java
+            ).apply {
+                flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or
+                        Intent.FLAG_ACTIVITY_SINGLE_TOP
+            }
+
+            startActivity(intent)
+            finish()
+        }
+
+        // Order History
+        findViewById<View>(R.id.navOrders)?.setOnClickListener {
+            startActivity(
+                Intent(
+                    this,
+                    OrderHistoryActivity::class.java
+                )
+            )
+        }
+
+        // Profile
+        findViewById<View>(R.id.btnProfile)?.setOnClickListener {
+            startActivity(
+                Intent(
+                    this,
+                    ProfileActivity::class.java
+                )
+            )
+        }
+    }
+
+    private fun confirmClearRestaurantCart(
+        restaurantId: Int,
+        restaurantName: String
+    ) {
+
         AlertDialog.Builder(this)
             .setTitle("Clear Restaurant Cart")
-            .setMessage("Are you sure you want to remove all items from $restaurantName?")
+            .setMessage(
+                "Are you sure you want to remove all items from $restaurantName?"
+            )
             .setPositiveButton("Clear Cart") { _, _ ->
-                val cleared = cartRepository.clearRestaurantCart(userId, restaurantId)
+
+                val cleared = cartRepository.clearRestaurantCart(
+                    userId,
+                    restaurantId
+                )
+
                 if (cleared) {
                     Toast.makeText(
                         this,
                         "Restaurant cart cleared successfully",
                         Toast.LENGTH_SHORT
                     ).show()
+
                     loadCartItems()
+
                 } else {
                     Toast.makeText(
                         this,
@@ -102,29 +174,8 @@ class CartActivity : AppCompatActivity() {
             .show()
     }
 
-    private fun setupNavigation() {
-        findViewById<View>(R.id.navHome)?.setOnClickListener {
-            val intent = Intent(this, HomeActivity::class.java).apply {
-                flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
-            }
-            startActivity(intent)
-            finish()
-        }
-
-        findViewById<View>(R.id.navRestaurants)?.setOnClickListener {
-            val intent = Intent(this, RestaurantsActivity::class.java).apply {
-                flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
-            }
-            startActivity(intent)
-            finish()
-        }
-
-        findViewById<View>(R.id.btnProfile)?.setOnClickListener {
-            startActivity(Intent(this, ProfileActivity::class.java))
-        }
-    }
-
     private fun loadCartItems() {
+
         val items = cartRepository.getCartItems(userId)
 
         restaurantCartAdapter.updateItems(items)

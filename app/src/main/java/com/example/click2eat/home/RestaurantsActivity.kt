@@ -1,32 +1,34 @@
 package com.example.click2eat.home
 
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.View
 import android.widget.EditText
-import android.widget.TextView
+import android.widget.ImageButton
 import android.widget.ImageView
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.click2eat.CartActivity
 import com.example.click2eat.R
+import com.example.click2eat.auth.ProfileActivity
+import com.example.click2eat.auth.SessionManager
 import com.example.click2eat.database.DatabaseSeeder
 import com.example.click2eat.database.MenuRepository
 import com.example.click2eat.database.RestaurantRepository
-import android.widget.ImageButton
-import com.example.click2eat.home.HomeActivity
-import java.util.concurrent.Executors
-import android.net.Uri
-import java.io.File
-import com.example.click2eat.auth.ProfileActivity
-import com.example.click2eat.auth.SessionManager
 import com.example.click2eat.database.UserRepository
+import com.example.click2eat.orders.OrderHistoryActivity
+import java.io.File
+import java.util.concurrent.Executors
 
 class RestaurantsActivity : AppCompatActivity() {
 
     companion object {
         const val EXTRA_CATEGORY = "category"
     }
+
     private val executor = Executors.newSingleThreadExecutor()
 
     private lateinit var repository: RestaurantRepository
@@ -38,12 +40,14 @@ class RestaurantsActivity : AppCompatActivity() {
 
         setContentView(R.layout.activity_restaurants)
 
+        // Profile
         findViewById<ImageView>(R.id.ivProfile).setOnClickListener {
             startActivity(
                 Intent(this, ProfileActivity::class.java)
             )
         }
 
+        // Home
         findViewById<ImageButton>(R.id.btnHome).setOnClickListener {
             startActivity(
                 Intent(this, HomeActivity::class.java).apply {
@@ -54,12 +58,29 @@ class RestaurantsActivity : AppCompatActivity() {
             finish()
         }
 
+        // Cart - FIXED
+        findViewById<ImageButton>(R.id.btnCart).setOnClickListener {
+            startActivity(
+                Intent(this, CartActivity::class.java)
+            )
+        }
+
+        // Restaurants
         findViewById<ImageButton>(R.id.btnRestaurants).setOnClickListener {
             // Already on the Restaurants screen
         }
 
+        // Order History
+        findViewById<View>(R.id.btnOrders).setOnClickListener {
+            startActivity(
+                Intent(this, OrderHistoryActivity::class.java)
+            )
+        }
+
+        // Restaurant Repository
         repository = RestaurantRepository(this)
 
+        // Restaurant Cards
         adapter = RestaurantAdapter { restaurant ->
             startActivity(
                 Intent(this, RestaurantActivity::class.java)
@@ -70,6 +91,7 @@ class RestaurantsActivity : AppCompatActivity() {
             )
         }
 
+        // Categories
         categoryAdapter = CategoryAdapter { category ->
             loadRestaurants(category.name.trim())
         }
@@ -82,6 +104,7 @@ class RestaurantsActivity : AppCompatActivity() {
             adapter = categoryAdapter
         }
 
+        // Restaurant List
         findViewById<RecyclerView>(R.id.rvRestaurants).apply {
             layoutManager = GridLayoutManager(
                 this@RestaurantsActivity,
@@ -90,10 +113,12 @@ class RestaurantsActivity : AppCompatActivity() {
             adapter = this@RestaurantsActivity.adapter
         }
 
+        // Back Button
         findViewById<View>(R.id.btnBack).setOnClickListener {
             finish()
         }
 
+        // Search
         val search = findViewById<EditText>(R.id.etSearch)
 
         search.setOnEditorActionListener { _, _, _ ->
@@ -105,6 +130,7 @@ class RestaurantsActivity : AppCompatActivity() {
             loadRestaurants(search.text.toString().trim())
         }
 
+        // Load Categories
         executor.execute {
             DatabaseSeeder.seed(this)
 
@@ -115,6 +141,7 @@ class RestaurantsActivity : AppCompatActivity() {
             }
         }
 
+        // Load Restaurants
         val selectedCategory =
             intent.getStringExtra(EXTRA_CATEGORY).orEmpty()
 

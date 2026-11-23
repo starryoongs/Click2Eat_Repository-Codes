@@ -21,6 +21,7 @@ import com.example.click2eat.database.RestaurantRepository
 import com.example.click2eat.database.UserRepository
 import java.io.File
 import java.util.concurrent.Executors
+import com.example.click2eat.orders.OrderHistoryActivity
 
 class HomeActivity : AppCompatActivity() {
 
@@ -103,6 +104,11 @@ class HomeActivity : AppCompatActivity() {
                     this,
                     CartActivity::class.java
                 )
+            )
+        }
+        findViewById<View>(R.id.btnOrders).setOnClickListener {
+            startActivity(
+                Intent(this, OrderHistoryActivity::class.java)
             )
         }
 
