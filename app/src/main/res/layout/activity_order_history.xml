@@ -1,49 +1,71 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:padding="24dp"
-    android:background="@color/click_profile_bg">
+    android:background="#FDE1EB">
 
+    <!-- Header -->
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center_vertical"
+        android:layout_height="75dp"
         android:orientation="horizontal"
-        android:padding="16dp"
-        android:background="@drawable/bg_profile_card">
+        android:gravity="center_vertical"
+        android:paddingStart="24dp"
+        android:paddingEnd="24dp">
 
-        <androidx.appcompat.widget.AppCompatButton
+        <ImageView
             android:id="@+id/ordersBackButton"
-            android:layout_width="wrap_content"
-            android:layout_height="44dp"
-            android:background="@drawable/bg_outline_button"
-            android:stateListAnimator="@null"
-            android:text="Back"
-            android:textAllCaps="false"
-            android:textColor="@color/click_pink" />
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:padding="8dp"
+            android:src="@drawable/three_line_icon"
+            android:contentDescription="Back" />
 
-        <TextView
+        <ImageView
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="55dp"
             android:layout_weight="1"
-            android:gravity="center"
-            android:text="Order History"
-            android:textColor="@color/click_text"
-            android:textSize="22sp"
-            android:textStyle="bold" />
+            android:src="@drawable/click2eat_logo_no_bg"
+            android:scaleType="fitCenter"
+            android:contentDescription="Click2Eat logo" />
+
+        <ImageView
+            android:id="@+id/ordersProfile"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:src="@drawable/default_profile2"
+            android:scaleType="centerCrop"
+            android:contentDescription="Profile" />
+
     </LinearLayout>
 
+    <!-- Title -->
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="12dp"
+        android:text="Order History"
+        android:textColor="#555555"
+        android:textSize="22sp"
+        android:textStyle="bold" />
+
+    <!-- Status Filter -->
     <Spinner
         android:id="@+id/orderStatusFilter"
         android:layout_width="match_parent"
         android:layout_height="48dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
         android:layout_marginTop="12dp"
         android:background="@drawable/bg_profile_card"
-        android:contentDescription="Filter orders by status"
-        android:paddingHorizontal="12dp" />
+        android:paddingStart="14dp"
+        android:paddingEnd="14dp"
+        android:contentDescription="Filter orders by status" />
 
+    <!-- Empty State -->
     <TextView
         android:id="@+id/orderHistoryEmpty"
         android:layout_width="match_parent"
@@ -55,12 +77,69 @@
         android:textSize="16sp"
         android:visibility="gone" />
 
+    <!-- Order List -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/orderHistoryRecyclerView"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginTop="8dp"
         android:layout_weight="1"
-        android:clipToPadding="false"
-        android:paddingTop="4dp" />
+        android:layout_marginTop="12dp"
+        android:paddingStart="20dp"
+        android:paddingEnd="20dp"
+        android:clipToPadding="false" />
+
+    <!-- Bottom Navigation -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:background="@color/click_white">
+
+        <ImageButton
+            android:id="@+id/ordersNavHome"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@android:color/transparent"
+            android:src="@drawable/dashboard_icon"
+            android:padding="20dp"
+            android:scaleType="centerInside"
+            android:contentDescription="Home" />
+
+        <ImageButton
+            android:id="@+id/ordersNavCart"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@android:color/transparent"
+            android:src="@drawable/cart_icon"
+            android:padding="20dp"
+            android:scaleType="centerInside"
+            android:contentDescription="Cart" />
+
+        <ImageButton
+            android:id="@+id/ordersNavRestaurants"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@android:color/transparent"
+            android:src="@drawable/restaurants_icon"
+            android:padding="20dp"
+            android:scaleType="centerInside"
+            android:contentDescription="Restaurants" />
+
+        <ImageButton
+            android:id="@+id/ordersNavOrders"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@android:color/transparent"
+            android:src="@drawable/history_icon"
+            android:padding="20dp"
+            android:scaleType="centerInside"
+            android:contentDescription="Order History" />
+
+    </LinearLayout>
+
 </LinearLayout>

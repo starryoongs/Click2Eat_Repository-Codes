@@ -12,6 +12,10 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.click2eat.R
 import com.example.click2eat.auth.SessionManager
+import com.example.click2eat.CartActivity
+import com.example.click2eat.home.HomeActivity
+import com.example.click2eat.home.RestaurantsActivity
+import com.example.click2eat.auth.ProfileActivity
 
 class OrderHistoryActivity : AppCompatActivity() {
     private lateinit var repository: OrderRepository
@@ -25,6 +29,30 @@ class OrderHistoryActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_order_history)
+
+
+        findViewById<View>(R.id.ordersNavHome).setOnClickListener {
+            startActivity(Intent(this, HomeActivity::class.java))
+            finish()
+        }
+
+        findViewById<View>(R.id.ordersNavCart).setOnClickListener {
+            startActivity(Intent(this, CartActivity::class.java))
+            finish()
+        }
+
+        findViewById<View>(R.id.ordersNavRestaurants).setOnClickListener {
+            startActivity(Intent(this, RestaurantsActivity::class.java))
+            finish()
+        }
+
+        findViewById<View>(R.id.ordersNavOrders).setOnClickListener {
+            // Already on Order History
+        }
+
+        findViewById<View>(R.id.ordersProfile).setOnClickListener {
+            startActivity(Intent(this, ProfileActivity::class.java))
+        }
 
         userId = SessionManager(this).getUserId()
         if (userId <= 0L) {
