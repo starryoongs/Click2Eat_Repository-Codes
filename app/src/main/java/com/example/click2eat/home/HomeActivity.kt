@@ -19,9 +19,10 @@ import com.example.click2eat.database.DatabaseSeeder
 import com.example.click2eat.database.MenuRepository
 import com.example.click2eat.database.RestaurantRepository
 import com.example.click2eat.database.UserRepository
+import com.example.click2eat.models.Restaurant
+import com.example.click2eat.orders.OrderHistoryActivity
 import java.io.File
 import java.util.concurrent.Executors
-import com.example.click2eat.orders.OrderHistoryActivity
 
 class HomeActivity : AppCompatActivity() {
 
@@ -48,10 +49,12 @@ class HomeActivity : AppCompatActivity() {
         restaurantRepository = RestaurantRepository(this)
         menuRepository = MenuRepository(this)
 
+        // Restaurant cards
         restaurantAdapter = RestaurantAdapter(
             onRestaurantClick = ::openRestaurant
         )
 
+        // Categories
         categoryAdapter = CategoryAdapter { category ->
             startActivity(
                 Intent(this, RestaurantsActivity::class.java).apply {
@@ -63,87 +66,75 @@ class HomeActivity : AppCompatActivity() {
             )
         }
 
-        findViewById<RecyclerView>(
-            R.id.rvCategories
-        ).apply {
+        findViewById<RecyclerView>(R.id.rvCategories).apply {
             layoutManager = GridLayoutManager(
                 this@HomeActivity,
                 4
             )
-
             adapter = categoryAdapter
         }
 
-        findViewById<RecyclerView>(
-            R.id.rvFeaturedRestaurants
-        ).apply {
+        findViewById<RecyclerView>(R.id.rvFeaturedRestaurants).apply {
             layoutManager = GridLayoutManager(
                 this@HomeActivity,
                 2
             )
-
             adapter = restaurantAdapter
         }
 
-        findViewById<ImageView>(
-            R.id.ivProfile
-        ).setOnClickListener {
+        // Profile
+        findViewById<ImageView>(R.id.ivProfile).setOnClickListener {
             startActivity(
-                Intent(
-                    this,
-                    ProfileActivity::class.java
-                )
+                Intent(this, ProfileActivity::class.java)
             )
         }
 
-        findViewById<View>(
-            R.id.btnCart
-        ).setOnClickListener {
+        // Cart
+        findViewById<View>(R.id.btnCart).setOnClickListener {
             startActivity(
-                Intent(
-                    this,
-                    CartActivity::class.java
-                )
+                Intent(this, CartActivity::class.java).apply {
+                    flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or
+                            Intent.FLAG_ACTIVITY_SINGLE_TOP
+                }
             )
         }
+
+        // Restaurants
+        findViewById<View>(R.id.btnRestaurants).setOnClickListener {
+            startActivity(
+                Intent(this, RestaurantsActivity::class.java).apply {
+                    flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or
+                            Intent.FLAG_ACTIVITY_SINGLE_TOP
+                }
+            )
+        }
+
+        // Order History
         findViewById<View>(R.id.btnOrders).setOnClickListener {
             startActivity(
-                Intent(this, OrderHistoryActivity::class.java)
+                Intent(this, OrderHistoryActivity::class.java).apply {
+                    flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or
+                            Intent.FLAG_ACTIVITY_SINGLE_TOP
+                }
             )
         }
 
-        findViewById<View>(
-            R.id.btnRestaurants
-        ).setOnClickListener {
-            startActivity(
-                Intent(
-                    this,
-                    RestaurantsActivity::class.java
-                )
-            )
-        }
+        // Search field
+        findViewById<EditText>(R.id.etSearch)
+            .setOnEditorActionListener { _, _, _ ->
+                openSearch()
+                true
+            }
 
-        findViewById<EditText>(
-            R.id.etSearch
-        ).setOnEditorActionListener { _, _, _ ->
-            openSearch()
-            true
-        }
-
-        findViewById<View>(
-            R.id.btnSearch
-        ).setOnClickListener {
+        // Search button
+        findViewById<View>(R.id.btnSearch).setOnClickListener {
             openSearch()
         }
 
-        findViewById<View>(
-            R.id.tvSeeRestaurants
-        ).setOnClickListener {
+        // See all restaurants
+        findViewById<View>(R.id.tvSeeRestaurants).setOnClickListener {
             startActivity(
-                Intent(
-                    this,
-                    RestaurantsActivity::class.java
-                )
+                Intent(this, RestaurantsActivity::class.java)
             )
         }
     }
@@ -188,12 +179,17 @@ class HomeActivity : AppCompatActivity() {
                         "Hi, $firstName"
                     }
 
-                val profileImage = findViewById<ImageView>(R.id.ivProfile)
+                val profileImage =
+                    findViewById<ImageView>(R.id.ivProfile)
 
                 if (profileFile != null && profileFile.exists()) {
-                    profileImage.setImageURI(Uri.fromFile(profileFile))
+                    profileImage.setImageURI(
+                        Uri.fromFile(profileFile)
+                    )
                 } else {
-                    profileImage.setImageResource(R.drawable.default_profile2)
+                    profileImage.setImageResource(
+                        R.drawable.default_profile2
+                    )
                 }
 
                 restaurantAdapter.submitList(restaurants)
@@ -203,29 +199,20 @@ class HomeActivity : AppCompatActivity() {
     }
 
     private fun openSearch() {
-        val query = findViewById<EditText>(
-            R.id.etSearch
-        ).text.toString().trim()
+        val query = findViewById<EditText>(R.id.etSearch)
+            .text.toString().trim()
 
         startActivity(
-            Intent(
-                this,
-                SearchActivity::class.java
-            ).putExtra(
+            Intent(this, SearchActivity::class.java).putExtra(
                 SearchActivity.EXTRA_QUERY,
                 query
             )
         )
     }
 
-    private fun openRestaurant(
-        restaurant: com.example.click2eat.models.Restaurant
-    ) {
+    private fun openRestaurant(restaurant: Restaurant) {
         startActivity(
-            Intent(
-                this,
-                RestaurantActivity::class.java
-            ).putExtra(
+            Intent(this, RestaurantActivity::class.java).putExtra(
                 RestaurantActivity.EXTRA_RESTAURANT_ID,
                 restaurant.id
             )
@@ -237,9 +224,8 @@ class HomeActivity : AppCompatActivity() {
             this,
             LoginActivity::class.java
         ).apply {
-            flags =
-                Intent.FLAG_ACTIVITY_NEW_TASK or
-                        Intent.FLAG_ACTIVITY_CLEAR_TASK
+            flags = Intent.FLAG_ACTIVITY_NEW_TASK or
+                    Intent.FLAG_ACTIVITY_CLEAR_TASK
         }
 
         startActivity(intent)

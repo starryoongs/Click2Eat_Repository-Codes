@@ -58,7 +58,7 @@ class RestaurantsActivity : AppCompatActivity() {
             finish()
         }
 
-        // Cart - FIXED
+        // Cart
         findViewById<ImageButton>(R.id.btnCart).setOnClickListener {
             startActivity(
                 Intent(this, CartActivity::class.java)

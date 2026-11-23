@@ -1,6 +1,7 @@
 package com.example.click2eat
 
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.View
 import android.widget.ImageView
@@ -17,11 +18,14 @@ import com.example.click2eat.auth.SessionManager
 import com.example.click2eat.checkout.CheckoutActivity
 import com.example.click2eat.database.CartRepository
 import com.example.click2eat.database.DatabaseHelper
+import com.example.click2eat.database.UserRepository
 import com.example.click2eat.home.HomeActivity
 import com.example.click2eat.home.RestaurantsActivity
 import com.example.click2eat.models.CartItem
+import com.example.click2eat.orders.OrderHistoryActivity
 import com.example.click2eat.utils.ImageUtils
 import com.example.click2eat.utils.PriceUtils
+import java.io.File
 
 class RestaurantCartActivity : AppCompatActivity() {
 
@@ -96,6 +100,7 @@ class RestaurantCartActivity : AppCompatActivity() {
             }
 
         setupBottomNavigation()
+        loadUserProfilePicture()
 
         findViewById<TextView>(R.id.btnRestaurantOptions)
             .setOnClickListener { view ->
@@ -134,8 +139,22 @@ class RestaurantCartActivity : AppCompatActivity() {
         loadCartItems()
     }
 
+    private fun loadUserProfilePicture() {
+        val profileImage = findViewById<ImageView>(R.id.btnProfile) ?: return
+        val user = UserRepository(this).getUserById(userId.toLong())
+        val profileFile = user?.profilePicture
+            ?.takeIf { it.isNotBlank() }
+            ?.let { File(filesDir, it) }
+
+        if (profileFile != null && profileFile.exists()) {
+            profileImage.setImageURI(Uri.fromFile(profileFile))
+        } else {
+            profileImage.setImageResource(R.drawable.default_profile2)
+        }
+    }
+
     private fun setupBottomNavigation() {
-        findViewById<View>(R.id.navHome)?.setOnClickListener {
+        findViewById<View>(R.id.btnHome)?.setOnClickListener {
             val intent = Intent(this, HomeActivity::class.java).apply {
                 flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
             }
@@ -143,16 +162,20 @@ class RestaurantCartActivity : AppCompatActivity() {
             finish()
         }
 
-        findViewById<View>(R.id.navCart)?.setOnClickListener {
+        findViewById<View>(R.id.btnCart)?.setOnClickListener {
             finish()
         }
 
-        findViewById<View>(R.id.navRestaurants)?.setOnClickListener {
+        findViewById<View>(R.id.btnRestaurants)?.setOnClickListener {
             val intent = Intent(this, RestaurantsActivity::class.java).apply {
                 flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
             }
             startActivity(intent)
             finish()
+        }
+
+        findViewById<View>(R.id.btnOrders)?.setOnClickListener {
+            startActivity(Intent(this, OrderHistoryActivity::class.java))
         }
 
         findViewById<View>(R.id.btnProfile)?.setOnClickListener {
@@ -233,6 +256,10 @@ class RestaurantCartActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
+
+        if (userId > 0) {
+            loadUserProfilePicture()
+        }
 
         if (::cartRepository.isInitialized &&
             ::cartAdapter.isInitialized

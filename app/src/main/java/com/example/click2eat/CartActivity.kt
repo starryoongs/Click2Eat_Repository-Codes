@@ -1,9 +1,10 @@
-
 package com.example.click2eat
 
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.View
+import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
@@ -14,9 +15,11 @@ import com.example.click2eat.adapters.RestaurantCartAdapter
 import com.example.click2eat.auth.ProfileActivity
 import com.example.click2eat.auth.SessionManager
 import com.example.click2eat.database.CartRepository
+import com.example.click2eat.database.UserRepository
 import com.example.click2eat.home.HomeActivity
 import com.example.click2eat.home.RestaurantsActivity
 import com.example.click2eat.orders.OrderHistoryActivity
+import java.io.File
 
 class CartActivity : AppCompatActivity() {
 
@@ -43,7 +46,6 @@ class CartActivity : AppCompatActivity() {
                 "Please log in first",
                 Toast.LENGTH_SHORT
             ).show()
-
             finish()
             return
         }
@@ -52,6 +54,7 @@ class CartActivity : AppCompatActivity() {
         cartRepository = CartRepository(this)
 
         setupNavigation()
+        loadUserProfilePicture()
 
         recyclerRestaurantCarts =
             findViewById(R.id.recyclerRestaurantCarts)
@@ -85,10 +88,11 @@ class CartActivity : AppCompatActivity() {
         loadCartItems()
     }
 
+    // Bottom navigation
     private fun setupNavigation() {
 
         // Home
-        findViewById<View>(R.id.navHome)?.setOnClickListener {
+        findViewById<View>(R.id.btnHome)?.setOnClickListener {
             val intent = Intent(
                 this,
                 HomeActivity::class.java
@@ -102,7 +106,7 @@ class CartActivity : AppCompatActivity() {
         }
 
         // Restaurants
-        findViewById<View>(R.id.navRestaurants)?.setOnClickListener {
+        findViewById<View>(R.id.btnRestaurants)?.setOnClickListener {
             val intent = Intent(
                 this,
                 RestaurantsActivity::class.java
@@ -116,7 +120,7 @@ class CartActivity : AppCompatActivity() {
         }
 
         // Order History
-        findViewById<View>(R.id.navOrders)?.setOnClickListener {
+        findViewById<View>(R.id.btnOrders)?.setOnClickListener {
             startActivity(
                 Intent(
                     this,
@@ -136,18 +140,38 @@ class CartActivity : AppCompatActivity() {
         }
     }
 
+    // Load profile picture
+    private fun loadUserProfilePicture() {
+        val profileImage =
+            findViewById<ImageView>(R.id.btnProfile) ?: return
+
+        val user = UserRepository(this)
+            .getUserById(userId.toLong())
+
+        val profileFile = user?.profilePicture
+            ?.takeIf { it.isNotBlank() }
+            ?.let { File(filesDir, it) }
+
+        if (profileFile != null && profileFile.exists()) {
+            profileImage.setImageURI(Uri.fromFile(profileFile))
+        } else {
+            profileImage.setImageResource(
+                R.drawable.default_profile2
+            )
+        }
+    }
+
+    // Clear restaurant cart
     private fun confirmClearRestaurantCart(
         restaurantId: Int,
         restaurantName: String
     ) {
-
         AlertDialog.Builder(this)
             .setTitle("Clear Restaurant Cart")
             .setMessage(
                 "Are you sure you want to remove all items from $restaurantName?"
             )
             .setPositiveButton("Clear Cart") { _, _ ->
-
                 val cleared = cartRepository.clearRestaurantCart(
                     userId,
                     restaurantId
@@ -161,7 +185,6 @@ class CartActivity : AppCompatActivity() {
                     ).show()
 
                     loadCartItems()
-
                 } else {
                     Toast.makeText(
                         this,
@@ -174,8 +197,8 @@ class CartActivity : AppCompatActivity() {
             .show()
     }
 
+    // Load cart items
     private fun loadCartItems() {
-
         val items = cartRepository.getCartItems(userId)
 
         restaurantCartAdapter.updateItems(items)
@@ -191,6 +214,10 @@ class CartActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
+
+        if (userId > 0) {
+            loadUserProfilePicture()
+        }
 
         if (::cartRepository.isInitialized &&
             ::restaurantCartAdapter.isInitialized
