@@ -6,39 +6,42 @@
     android:orientation="vertical"
     android:background="#FDE1EB">
 
-    <!-- Header -->
+    <!-- Header (matches HomeActivity) -->
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="75dp"
-        android:orientation="horizontal"
+        android:layout_height="71dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="25dp"
+        android:layout_marginEnd="18dp"
         android:gravity="center_vertical"
-        android:paddingStart="24dp"
-        android:paddingEnd="24dp">
+        android:orientation="horizontal">
 
         <ImageView
             android:id="@+id/ordersBackButton"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:padding="8dp"
-            android:src="@drawable/three_line_icon"
-            android:contentDescription="Back" />
+            android:layout_width="28dp"
+            android:layout_height="30dp"
+            android:layout_marginLeft="9dp"
+            android:contentDescription="Menu"
+            android:src="@drawable/three_line_icon" />
 
         <ImageView
             android:layout_width="0dp"
-            android:layout_height="55dp"
+            android:layout_height="58dp"
             android:layout_weight="1"
-            android:src="@drawable/click2eat_logo_no_bg"
+            android:contentDescription="Click2Eat logo"
             android:scaleType="fitCenter"
-            android:contentDescription="Click2Eat logo" />
+            android:src="@drawable/click2eat_logo_no_bg" />
 
         <ImageView
             android:id="@+id/ordersProfile"
-            android:layout_width="45dp"
-            android:layout_height="45dp"
-            android:src="@drawable/default_profile2"
+            android:layout_width="47dp"
+            android:layout_height="47dp"
+            android:layout_marginEnd="13dp"
+            android:background="@drawable/bg_profile_circle"
+            android:clipToOutline="true"
+            android:contentDescription="Open profile"
             android:scaleType="centerCrop"
-            android:contentDescription="Profile" />
-
+            android:src="@drawable/default_profile2" />
     </LinearLayout>
 
     <!-- Title -->
