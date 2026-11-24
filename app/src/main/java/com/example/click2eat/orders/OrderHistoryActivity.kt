@@ -2,6 +2,10 @@ package com.example.click2eat.orders
 
 import android.content.Intent
 import android.os.Bundle
+import java.io.File
+import com.example.click2eat.database.UserRepository
+import android.widget.ImageView
+import android.net.Uri
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
@@ -100,6 +104,7 @@ class OrderHistoryActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
         if (::repository.isInitialized && userId > 0L) {
+            loadProfilePicture()
             repository.refreshStatuses(userId)
             renderOrders()
         }
@@ -109,5 +114,21 @@ class OrderHistoryActivity : AppCompatActivity() {
         val orders = repository.getOrdersWithItems(userId, selectedFilter)
         adapter.submitList(orders)
         empty.visibility = if (orders.isEmpty()) View.VISIBLE else View.GONE
+    }
+
+    private fun loadProfilePicture() {
+        val profileImage = findViewById<ImageView>(R.id.ordersProfile) ?: return
+
+        val user = UserRepository(this).getUserById(userId)
+
+        val profileFile = user?.profilePicture
+            ?.takeIf { it.isNotBlank() }
+            ?.let { File(filesDir, it) }
+
+        if (profileFile != null && profileFile.exists()) {
+            profileImage.setImageURI(Uri.fromFile(profileFile))
+        } else {
+            profileImage.setImageResource(R.drawable.default_profile2)
+        }
     }
 }

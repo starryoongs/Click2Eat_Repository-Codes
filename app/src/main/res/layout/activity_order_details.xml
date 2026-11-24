@@ -6,26 +6,27 @@
     android:background="#FDE1EB"
     android:orientation="vertical">
 
-    <!-- Click2Eat Header -->
+    <!-- Header (matches HomeActivity) -->
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="75dp"
+        android:layout_height="71dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="25dp"
+        android:layout_marginEnd="18dp"
         android:gravity="center_vertical"
-        android:orientation="horizontal"
-        android:paddingStart="24dp"
-        android:paddingEnd="24dp">
+        android:orientation="horizontal">
 
         <ImageView
             android:id="@+id/orderDetailsMenu"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:padding="8dp"
-            android:contentDescription="Back to orders"
+            android:layout_width="28dp"
+            android:layout_height="30dp"
+            android:layout_marginLeft="9dp"
+            android:contentDescription="Menu"
             android:src="@drawable/three_line_icon" />
 
         <ImageView
             android:layout_width="0dp"
-            android:layout_height="55dp"
+            android:layout_height="58dp"
             android:layout_weight="1"
             android:contentDescription="Click2Eat logo"
             android:scaleType="fitCenter"
@@ -33,12 +34,14 @@
 
         <ImageView
             android:id="@+id/orderDetailsProfile"
-            android:layout_width="45dp"
-            android:layout_height="45dp"
-            android:contentDescription="Profile"
+            android:layout_width="47dp"
+            android:layout_height="47dp"
+            android:layout_marginEnd="13dp"
+            android:background="@drawable/bg_profile_circle"
+            android:clipToOutline="true"
+            android:contentDescription="Open profile"
             android:scaleType="centerCrop"
             android:src="@drawable/default_profile2" />
-
     </LinearLayout>
 
     <!-- Order Details Title -->

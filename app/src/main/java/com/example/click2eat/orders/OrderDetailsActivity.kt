@@ -2,6 +2,9 @@ package com.example.click2eat.orders
 
 import android.content.Intent
 import android.os.Bundle
+import java.io.File
+import com.example.click2eat.database.UserRepository
+import android.net.Uri
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.Button
@@ -97,6 +100,7 @@ class OrderDetailsActivity : AppCompatActivity() {
             userId > 0L &&
             orderId > 0L
         ) {
+            loadProfilePicture()
             refreshDetails()
         }
     }
@@ -222,5 +226,21 @@ class OrderDetailsActivity : AppCompatActivity() {
                 refreshDetails()
             }
             .show()
+    }
+
+    private fun loadProfilePicture() {
+        val profileImage = findViewById<ImageView>(R.id.orderDetailsProfile) ?: return
+
+        val user = UserRepository(this).getUserById(userId)
+
+        val profileFile = user?.profilePicture
+            ?.takeIf { it.isNotBlank() }
+            ?.let { File(filesDir, it) }
+
+        if (profileFile != null && profileFile.exists()) {
+            profileImage.setImageURI(Uri.fromFile(profileFile))
+        } else {
+            profileImage.setImageResource(R.drawable.default_profile2)
+        }
     }
 }
