@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:layout_marginTop="10dp"
     android:orientation="vertical"
     android:paddingVertical="12dp">
 
@@ -61,7 +62,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
-                android:textColor="@color/click_text"
+                android:textColor="#666666"
                 android:textSize="14sp"
                 android:textStyle="bold"
                 tools:text="₱199.00" />

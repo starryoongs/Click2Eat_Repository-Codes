@@ -154,9 +154,9 @@
 
         <ImageView
             android:id="@+id/ivDinosaur"
-            android:layout_width="175dp"
-            android:layout_height="155dp"
-            android:src="@drawable/dinosaur"
+            android:layout_width="230dp"
+            android:layout_height="220dp"
+            android:src="@drawable/mascot"
             android:contentDescription="Click2Eat Dinosaur Mascot"
             android:scaleType="fitCenter"/>
 

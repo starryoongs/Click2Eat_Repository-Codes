@@ -54,19 +54,19 @@
             <!-- Quantity Controls -->
             <LinearLayout
                 android:layout_width="wrap_content"
-                android:layout_height="48dp"
+                android:layout_height="30dp"
                 android:layout_marginTop="8dp"
                 android:orientation="horizontal"
                 android:gravity="center_vertical">
 
                 <TextView
                     android:id="@+id/btnDecrease"
-                    android:layout_width="48dp"
-                    android:layout_height="48dp"
+                    android:layout_width="25dp"
+                    android:layout_height="20dp"
                     android:gravity="center"
                     android:text="−"
                     android:textColor="#555555"
-                    android:textSize="22sp"
+                    android:textSize="14sp"
                     android:textStyle="bold"
                     android:clickable="true"
                     android:focusable="true"
@@ -74,26 +74,39 @@
 
                 <TextView
                     android:id="@+id/txtQuantity"
-                    android:layout_width="32dp"
-                    android:layout_height="wrap_content"
+                    android:layout_width="25dp"
+                    android:layout_height="20dp"
                     android:gravity="center"
                     android:textColor="#555555"
-                    android:textSize="16sp"
+                    android:textSize="14sp"
                     android:textStyle="bold"
                     tools:text="2" />
 
                 <TextView
                     android:id="@+id/btnIncrease"
-                    android:layout_width="48dp"
-                    android:layout_height="48dp"
+                    android:layout_width="25dp"
+                    android:layout_height="20dp"
                     android:gravity="center"
                     android:text="+"
                     android:textColor="#555555"
-                    android:textSize="20sp"
+                    android:textSize="14sp"
                     android:textStyle="bold"
                     android:clickable="true"
                     android:focusable="true"
                     android:contentDescription="Increase quantity" />
+
+                <ImageView
+                    android:id="@+id/btnRemoveItem"
+                    android:layout_width="28dp"
+                    android:layout_height="14dp"
+                    android:layout_marginEnd="8dp"
+                    android:src="@drawable/trash_icon"
+                    android:scaleType="fitCenter"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:contentDescription="Back to all carts" />
+
+
 
             </LinearLayout>
 
@@ -110,21 +123,11 @@
                 android:id="@+id/txtItemSubtotal"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="60dp"
                 android:textColor="#555555"
                 android:textSize="14sp"
                 android:textStyle="bold"
                 tools:text="₱398.00" />
-
-            <ImageView
-                android:id="@+id/btnRemoveItem"
-                android:layout_width="48dp"
-                android:layout_height="48dp"
-                android:layout_marginTop="8dp"
-                android:padding="12dp"
-                android:src="@android:drawable/ic_menu_delete"
-                android:contentDescription="Remove food item"
-                android:clickable="true"
-                android:focusable="true" />
 
         </LinearLayout>
 

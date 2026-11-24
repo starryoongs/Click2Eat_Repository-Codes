@@ -136,6 +136,15 @@ class OrderRepository(context: Context) {
         ) == 1
     }
 
+    fun getMostRecentOrderForUser(userId: Long): Order? {
+        if (userId <= 0L) return null
+
+        return getOrders(
+            userId = userId,
+            statusFilter = FILTER_ALL
+        ).firstOrNull()
+    }
+
     companion object {
         const val FILTER_ALL = "All"
         const val PREPARING_AFTER_MS = 2 * 60 * 1000L

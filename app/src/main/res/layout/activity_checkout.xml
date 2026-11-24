@@ -46,7 +46,7 @@
     <!-- Back Button and Title -->
     <LinearLayout
         android:id="@+id/btnBackCheckout"
-        android:layout_width="wrap_content"
+        android:layout_width="392dp"
         android:layout_height="52dp"
         android:clickable="true"
         android:focusable="true"
@@ -55,19 +55,20 @@
         android:paddingHorizontal="20dp">
 
         <ImageView
-            android:layout_width="32dp"
-            android:layout_height="32dp"
+            android:layout_width="21dp"
+            android:layout_height="21dp"
             android:layout_marginEnd="10dp"
             android:contentDescription="Back to cart"
             android:scaleType="fitCenter"
-            android:src="@drawable/ic_back_arrow" />
+            android:src="@drawable/arrow_left" />
 
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="103dp"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
             android:text="Checkout"
             android:textColor="#555555"
-            android:textSize="22sp"
+            android:textSize="20sp"
             android:textStyle="bold" />
     </LinearLayout>
 
@@ -122,6 +123,20 @@
                     android:textColor="#555555"
                     android:textSize="14sp" />
             </LinearLayout>
+
+            <TextView
+                android:id="@+id/btnRestaurantOptions"
+                android:layout_width="24dp"
+                android:layout_height="20dp"
+                android:layout_marginBottom="18dp"
+                android:clickable="true"
+                android:contentDescription="Restaurant cart options"
+                android:focusable="true"
+                android:gravity="center"
+                android:text="•••"
+                android:textColor="#555555"
+                android:textSize="20sp" />
+
         </LinearLayout>
 
         <!-- Scrollable Order Items & Delivery Fields -->
@@ -200,7 +215,7 @@
                 android:layout_weight="1"
                 android:text="Total:"
                 android:textColor="#111111"
-                android:textSize="20sp"
+                android:textSize="15sp"
                 android:textStyle="bold" />
 
             <TextView
@@ -209,15 +224,15 @@
                 android:layout_height="wrap_content"
                 android:text="₱0.00"
                 android:textColor="#111111"
-                android:textSize="22sp"
+                android:textSize="18sp"
                 android:textStyle="bold" />
         </LinearLayout>
 
         <!-- Pink Outlined Place Order Button (Matches Mockup) -->
         <TextView
             android:id="@+id/btnPlaceOrder"
-            android:layout_width="220dp"
-            android:layout_height="48dp"
+            android:layout_width="165dp"
+            android:layout_height="35dp"
             android:layout_gravity="center"
             android:layout_marginTop="6dp"
             android:layout_marginBottom="4dp"
@@ -227,8 +242,7 @@
             android:gravity="center"
             android:text="Place Order"
             android:textColor="#F477B3"
-            android:textSize="15sp"
-            android:textStyle="bold" />
+            android:textSize="12sp" />
     </LinearLayout>
 
     <!-- Fixed Bottom Navigation -->

@@ -127,19 +127,19 @@ class OrderDetailsActivity : AppCompatActivity() {
             "Status: ${order.status}"
 
         findViewById<TextView>(R.id.orderDetailsDate).text =
-            "Placed: " + SimpleDateFormat(
-                "MMM d, yyyy • h:mm a",
+            "Ordered on: " + SimpleDateFormat(
+                "MMM d, yyyy (h:mm a)",
                 Locale.getDefault()
             ).format(Date(order.createdAt))
 
         findViewById<TextView>(R.id.orderDetailsAddress).text =
-            "Delivery address: ${order.deliveryAddress}"
+            "Delivery Address: ${order.deliveryAddress}"
 
         findViewById<TextView>(R.id.orderDetailsContact).text =
-            "Contact: ${order.contactNumber}"
+            "Contact Number: ${order.contactNumber}"
 
         findViewById<TextView>(R.id.orderDetailsTotal).text =
-            "Total: ${money(order.totalAmountCentavos)}"
+        "${money(order.totalAmountCentavos)}"
 
         // Restaurant logo
         val db = DatabaseHelper(this).readableDatabase

@@ -194,6 +194,16 @@ object DatabaseSeeder {
             16000,
             "kfc_brownie"
         )
+
+        addMenuItem(
+            database,
+            restaurantIds["Burger King"],
+            categoryIds["Fastfood, Burger"],
+            "Whopper",
+            "Flame-grilled beef burger with classic fresh toppings.",
+            25900,
+            "whopper"
+        )
     }
 
     private fun addRestaurant(

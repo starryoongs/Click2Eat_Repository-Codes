@@ -50,11 +50,12 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingStart="24dp"
-        android:paddingTop="14dp"
+        android:paddingTop="18dp"
         android:paddingBottom="16dp"
+        android:layout_marginLeft="10dp"
         android:text="All Carts"
         android:textColor="#555555"
-        android:textSize="24sp"
+        android:textSize="20sp"
         android:textStyle="bold" />
 
     <!-- Scrollable Restaurant List -->
@@ -65,11 +66,12 @@
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerRestaurantCarts"
-            android:layout_width="match_parent"
+            android:layout_width="385dp"
             android:layout_height="match_parent"
             android:paddingStart="20dp"
             android:paddingEnd="20dp"
             android:paddingTop="4dp"
+            android:layout_marginLeft="12dp"
             android:paddingBottom="20dp"
             android:clipToPadding="false" />
 

@@ -57,8 +57,9 @@
         <!-- Restaurant Options -->
         <TextView
             android:id="@+id/btnRestaurantOptions"
-            android:layout_width="40dp"
-            android:layout_height="48dp"
+            android:layout_width="24dp"
+            android:layout_height="20dp"
+            android:layout_marginBottom="18dp"
             android:gravity="center"
             android:text="•••"
             android:textSize="20sp"
@@ -103,7 +104,7 @@
             android:layout_height="wrap_content"
             android:text="₱400.00"
             android:textColor="#555555"
-            android:textSize="17sp"
+            android:textSize="16sp"
             android:textStyle="bold" />
 
     </LinearLayout>
@@ -111,15 +112,15 @@
     <!-- View Cart Button -->
     <TextView
         android:id="@+id/btnViewCart"
-        android:layout_width="220dp"
-        android:layout_height="48dp"
+        android:layout_width="165dp"
+        android:layout_height="35dp"
         android:layout_gravity="center"
         android:layout_marginTop="20dp"
         android:background="@drawable/bg_pink_outline"
         android:gravity="center"
         android:text="View your cart"
         android:textColor="#F477B3"
-        android:textSize="15sp"
+        android:textSize="12sp"
         android:clickable="true"
         android:focusable="true"
         android:contentDescription="View restaurant cart" />

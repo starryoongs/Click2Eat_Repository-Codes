@@ -17,7 +17,8 @@ class RestaurantRepository(context: Context) {
                 "name",
                 "description",
                 "image",
-                "delivery_time"
+                "delivery_time",
+                "category"
             ),
             null,
             null,
@@ -43,6 +44,9 @@ class RestaurantRepository(context: Context) {
                         ),
                         deliveryTime = cursor.getString(
                             cursor.getColumnIndexOrThrow("delivery_time")
+                        ),
+                        category = cursor.getString(
+                            cursor.getColumnIndexOrThrow("category")
                         )
                     )
                 )
@@ -60,7 +64,8 @@ class RestaurantRepository(context: Context) {
                 "name",
                 "description",
                 "image",
-                "delivery_time"
+                "delivery_time",
+                "category"
             ),
             "id = ?",
             arrayOf(id.toString()),
@@ -85,6 +90,9 @@ class RestaurantRepository(context: Context) {
                     ),
                     deliveryTime = cursor.getString(
                         cursor.getColumnIndexOrThrow("delivery_time")
+                    ),
+                    category = cursor.getString(
+                        cursor.getColumnIndexOrThrow("category")
                     )
                 )
             }
@@ -95,11 +103,11 @@ class RestaurantRepository(context: Context) {
 
     fun searchRestaurants(keyword: String): List<Restaurant> {
         val restaurants = mutableListOf<Restaurant>()
-        val searchKeyword = "%" + keyword.trim().lowercase() + "%"
+        val searchKeyword = "%${keyword.trim().lowercase()}%"
 
         helper.readableDatabase.rawQuery(
             """
-            SELECT id, name, description, image, delivery_time
+            SELECT id, name, description, image, delivery_time, category
             FROM restaurants
             WHERE LOWER(name) LIKE ?
                OR LOWER(COALESCE(description, '')) LIKE ?
@@ -126,6 +134,9 @@ class RestaurantRepository(context: Context) {
                         ),
                         deliveryTime = cursor.getString(
                             cursor.getColumnIndexOrThrow("delivery_time")
+                        ),
+                        category = cursor.getString(
+                            cursor.getColumnIndexOrThrow("category")
                         )
                     )
                 )

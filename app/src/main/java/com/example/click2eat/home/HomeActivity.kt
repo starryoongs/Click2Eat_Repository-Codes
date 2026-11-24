@@ -21,6 +21,7 @@ import com.example.click2eat.database.RestaurantRepository
 import com.example.click2eat.database.UserRepository
 import com.example.click2eat.models.Restaurant
 import com.example.click2eat.orders.OrderHistoryActivity
+import com.example.click2eat.orders.OrderRepository
 import java.io.File
 import java.util.concurrent.Executors
 
@@ -46,15 +47,19 @@ class HomeActivity : AppCompatActivity() {
 
         setContentView(R.layout.activity_home)
 
+        findViewById<View>(R.id.btnSeeRecentOrders).setOnClickListener {
+            startActivity(
+                Intent(this, OrderHistoryActivity::class.java)
+            )
+        }
+
         restaurantRepository = RestaurantRepository(this)
         menuRepository = MenuRepository(this)
 
-        // Restaurant cards
         restaurantAdapter = RestaurantAdapter(
             onRestaurantClick = ::openRestaurant
         )
 
-        // Categories
         categoryAdapter = CategoryAdapter { category ->
             startActivity(
                 Intent(this, RestaurantsActivity::class.java).apply {
@@ -82,56 +87,52 @@ class HomeActivity : AppCompatActivity() {
             adapter = restaurantAdapter
         }
 
-        // Profile
         findViewById<ImageView>(R.id.ivProfile).setOnClickListener {
             startActivity(
                 Intent(this, ProfileActivity::class.java)
             )
         }
 
-        // Cart
         findViewById<View>(R.id.btnCart).setOnClickListener {
             startActivity(
                 Intent(this, CartActivity::class.java).apply {
-                    flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or
-                            Intent.FLAG_ACTIVITY_SINGLE_TOP
+                    flags =
+                        Intent.FLAG_ACTIVITY_CLEAR_TOP or
+                                Intent.FLAG_ACTIVITY_SINGLE_TOP
                 }
             )
         }
 
-        // Restaurants
         findViewById<View>(R.id.btnRestaurants).setOnClickListener {
             startActivity(
                 Intent(this, RestaurantsActivity::class.java).apply {
-                    flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or
-                            Intent.FLAG_ACTIVITY_SINGLE_TOP
+                    flags =
+                        Intent.FLAG_ACTIVITY_CLEAR_TOP or
+                                Intent.FLAG_ACTIVITY_SINGLE_TOP
                 }
             )
         }
 
-        // Order History
         findViewById<View>(R.id.btnOrders).setOnClickListener {
             startActivity(
                 Intent(this, OrderHistoryActivity::class.java).apply {
-                    flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or
-                            Intent.FLAG_ACTIVITY_SINGLE_TOP
+                    flags =
+                        Intent.FLAG_ACTIVITY_CLEAR_TOP or
+                                Intent.FLAG_ACTIVITY_SINGLE_TOP
                 }
             )
         }
 
-        // Search field
         findViewById<EditText>(R.id.etSearch)
             .setOnEditorActionListener { _, _, _ ->
                 openSearch()
                 true
             }
 
-        // Search button
         findViewById<View>(R.id.btnSearch).setOnClickListener {
             openSearch()
         }
 
-        // See all restaurants
         findViewById<View>(R.id.tvSeeRestaurants).setOnClickListener {
             startActivity(
                 Intent(this, RestaurantsActivity::class.java)
@@ -159,10 +160,23 @@ class HomeActivity : AppCompatActivity() {
 
             val userId = session.getUserId()
 
-            val user = if (userId != -1L) {
+            val user = if (userId > 0L) {
                 UserRepository(this).getUserById(userId)
             } else {
                 null
+            }
+
+            val recentOrder = if (userId > 0L) {
+                OrderRepository(this)
+                    .getMostRecentOrderForUser(userId)
+            } else {
+                null
+            }
+
+            val recentRestaurant = recentOrder?.let {
+                restaurantRepository.getRestaurantById(
+                    it.restaurantId.toLong()
+                )
             }
 
             val profileFile = user?.profilePicture
@@ -170,7 +184,9 @@ class HomeActivity : AppCompatActivity() {
                 ?.let { File(filesDir, it) }
 
             runOnUiThread {
-                val firstName = user?.firstName?.trim().orEmpty()
+                val firstName = user?.firstName
+                    ?.trim()
+                    .orEmpty()
 
                 findViewById<TextView>(R.id.tvUsername).text =
                     if (firstName.isEmpty()) {
@@ -194,16 +210,77 @@ class HomeActivity : AppCompatActivity() {
 
                 restaurantAdapter.submitList(restaurants)
                 categoryAdapter.submitList(categories)
+
+                val recentImage =
+                    findViewById<ImageView>(
+                        R.id.ivRecentOrderRestaurant
+                    )
+
+                val recentName =
+                    findViewById<TextView>(
+                        R.id.tvRecentOrderRestaurant
+                    )
+
+                val recentDeliveryTime =
+                    findViewById<TextView>(
+                        R.id.tvRecentOrderDeliveryTime
+                    )
+
+                val recentCategory =
+                    findViewById<TextView>(
+                        R.id.tvRecentOrderCategory
+                    )
+
+                val noRecentOrders =
+                    findViewById<TextView>(
+                        R.id.tvNoRecentOrders
+                    )
+
+                if (recentOrder != null && recentRestaurant != null) {
+                    recentImage.visibility = View.VISIBLE
+                    recentName.visibility = View.VISIBLE
+                    recentDeliveryTime.visibility = View.VISIBLE
+                    recentCategory.visibility = View.VISIBLE
+                    noRecentOrders.visibility = View.GONE
+
+                    val imageResource = resources.getIdentifier(
+                        recentRestaurant.image,
+                        "drawable",
+                        packageName
+                    )
+
+                    if (imageResource != 0) {
+                        recentImage.setImageResource(imageResource)
+                    }
+
+                    recentName.text = recentRestaurant.name
+                    recentDeliveryTime.text =
+                        recentRestaurant.deliveryTime
+                    recentCategory.text =
+                        recentRestaurant.category
+
+                } else {
+                    recentImage.visibility = View.GONE
+                    recentName.visibility = View.GONE
+                    recentDeliveryTime.visibility = View.GONE
+                    recentCategory.visibility = View.GONE
+                    noRecentOrders.visibility = View.VISIBLE
+                }
             }
         }
     }
 
     private fun openSearch() {
         val query = findViewById<EditText>(R.id.etSearch)
-            .text.toString().trim()
+            .text
+            .toString()
+            .trim()
 
         startActivity(
-            Intent(this, SearchActivity::class.java).putExtra(
+            Intent(
+                this,
+                SearchActivity::class.java
+            ).putExtra(
                 SearchActivity.EXTRA_QUERY,
                 query
             )
@@ -212,7 +289,10 @@ class HomeActivity : AppCompatActivity() {
 
     private fun openRestaurant(restaurant: Restaurant) {
         startActivity(
-            Intent(this, RestaurantActivity::class.java).putExtra(
+            Intent(
+                this,
+                RestaurantActivity::class.java
+            ).putExtra(
                 RestaurantActivity.EXTRA_RESTAURANT_ID,
                 restaurant.id
             )
@@ -224,8 +304,9 @@ class HomeActivity : AppCompatActivity() {
             this,
             LoginActivity::class.java
         ).apply {
-            flags = Intent.FLAG_ACTIVITY_NEW_TASK or
-                    Intent.FLAG_ACTIVITY_CLEAR_TASK
+            flags =
+                Intent.FLAG_ACTIVITY_NEW_TASK or
+                        Intent.FLAG_ACTIVITY_CLEAR_TASK
         }
 
         startActivity(intent)

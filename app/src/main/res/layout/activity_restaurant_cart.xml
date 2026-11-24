@@ -48,17 +48,18 @@
     <!-- Back Button and Title -->
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="65dp"
+        android:layout_height="50dp"
+        android:layout_marginLeft="9dp"
         android:orientation="horizontal"
         android:gravity="center_vertical"
         android:paddingHorizontal="20dp">
 
         <ImageView
             android:id="@+id/btnBack"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:layout_width="21dp"
+            android:layout_height="21dp"
             android:layout_marginEnd="8dp"
-            android:src="@drawable/ic_back_arrow"
+            android:src="@drawable/arrow_left"
             android:scaleType="fitCenter"
             android:clickable="true"
             android:focusable="true"
@@ -67,8 +68,9 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="7dp"
             android:text="Cart"
-            android:textSize="24sp"
+            android:textSize="20sp"
             android:textStyle="bold"
             android:textColor="#555555" />
 
@@ -76,11 +78,12 @@
 
     <!-- White Restaurant Cart Card -->
     <LinearLayout
-        android:layout_width="match_parent"
+        android:layout_width="354dp"
         android:layout_height="0dp"
-        android:layout_weight="1"
-        android:layout_marginHorizontal="20dp"
+        android:layout_marginLeft="30dp"
+        android:layout_marginTop="2dp"
         android:layout_marginBottom="20dp"
+        android:layout_weight="1"
         android:background="@drawable/bg_restaurant_cart"
         android:orientation="vertical"
         android:padding="20dp">
@@ -89,22 +92,22 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center_vertical">
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
 
             <ImageView
                 android:id="@+id/imgRestaurant"
                 android:layout_width="60dp"
                 android:layout_height="60dp"
+                android:contentDescription="Restaurant logo"
                 android:scaleType="fitCenter"
-                android:src="@android:drawable/ic_menu_gallery"
-                android:contentDescription="Restaurant logo" />
+                android:src="@android:drawable/ic_menu_gallery" />
 
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
                 android:layout_marginStart="12dp"
+                android:layout_weight="1"
                 android:orientation="vertical">
 
                 <TextView
@@ -112,9 +115,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="McDo - Fastfood"
+                    android:textColor="#111111"
                     android:textSize="19sp"
-                    android:textStyle="bold"
-                    android:textColor="#111111" />
+                    android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/txtDeliveryTime"
@@ -122,22 +125,23 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="4dp"
                     android:text="20-30 mins"
-                    android:textSize="14sp"
-                    android:textColor="#555555" />
+                    android:textColor="#555555"
+                    android:textSize="14sp" />
 
             </LinearLayout>
 
             <TextView
                 android:id="@+id/btnRestaurantOptions"
-                android:layout_width="48dp"
-                android:layout_height="48dp"
+                android:layout_width="24dp"
+                android:layout_height="20dp"
+                android:layout_marginBottom="18dp"
+                android:clickable="true"
+                android:contentDescription="Restaurant cart options"
+                android:focusable="true"
                 android:gravity="center"
                 android:text="•••"
-                android:textSize="20sp"
                 android:textColor="#555555"
-                android:clickable="true"
-                android:focusable="true"
-                android:contentDescription="Restaurant cart options" />
+                android:textSize="20sp" />
 
         </LinearLayout>
 
@@ -146,16 +150,16 @@
             android:id="@+id/recyclerCartItems"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="1"
             android:layout_marginTop="20dp"
+            android:layout_weight="1"
             android:clipToPadding="false" />
 
         <!-- Total -->
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
+            android:layout_height="46dp"
             android:gravity="center_vertical"
+            android:orientation="horizontal"
             android:paddingVertical="12dp">
 
             <TextView
@@ -163,36 +167,35 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="Total:"
-                android:textSize="20sp"
-                android:textStyle="bold"
-                android:textColor="#111111" />
+                android:textColor="#111111"
+                android:textSize="15sp"
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/txtCartTotal"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="₱473.00"
-                android:textSize="22sp"
-                android:textStyle="bold"
-                android:textColor="#111111" />
+                android:textColor="#111111"
+                android:textSize="18sp"
+                android:textStyle="bold" />
 
         </LinearLayout>
 
         <!-- Checkout Button -->
         <TextView
             android:id="@+id/btnProceedCheckout"
-            android:layout_width="220dp"
-            android:layout_height="48dp"
+            android:layout_width="165dp"
+            android:layout_height="35dp"
             android:layout_gravity="center"
             android:layout_marginTop="12dp"
-            android:layout_marginBottom="8dp"
             android:background="@drawable/bg_pink_outline"
+            android:clickable="true"
+            android:focusable="true"
             android:gravity="center"
             android:text="Proceed to Checkout"
-            android:textSize="15sp"
             android:textColor="#F477B3"
-            android:clickable="true"
-            android:focusable="true" />
+            android:textSize="12sp" />
 
     </LinearLayout>
 
